@@ -34,15 +34,25 @@ app.use('/api', apiRoutes);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/admin', (req,res)=> {
-  res.sendFile(path.join(__dirname,'public','admin.html'));
-});
-app.get('/', (req,res)=> {
-  res.sendFile(path.join(__dirname,'public','login.html'));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-app.get('/home', (req,res)=> {
-  res.sendFile(path.join(__dirname,'public','index.html'));
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+app.get('/home', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+// HAMESHA LAST
+app.get('*', (req, res) => {
+  res.status(404).send('Page not found');
 });
 
 const port = Number(process.env.PORT || 3980);
