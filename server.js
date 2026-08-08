@@ -42,5 +42,5 @@ app.get('*', (req,res)=> {
   res.sendFile(path.join(__dirname,'public','index.html'));
 });
 
-const port = Number(process.env.PORT || 3000);
+const port = Number(process.env.PORT || 3980);
 app.listen(port, ()=> console.log(`Arina Node server running on http://localhost:${port}`));
