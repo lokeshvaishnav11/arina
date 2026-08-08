@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Entrar • Arina Web Call</title>
+    <style>
+        :root {
+            --bg: #07050b;
+            --panel: #100b18;
+            --panel2: #171021;
+            --text: #fff;
+            --muted: #b8aec2;
+            --pink: #ff3f9f;
+            --pink2: #ff74c6;
+            --violet: #8b5cf6;
+            --cyan: #42d9ff;
+            --line: rgba(255, 255, 255, .10);
+            --shadow: 0 28px 80px rgba(0, 0, 0, .45)
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            color: var(--text)
+        }
+
+        body {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            background: radial-gradient(circle at 15% 0%, rgba(255, 63, 159, .20), transparent 30%), radial-gradient(circle at 90% 12%, rgba(139, 92, 246, .20), transparent 28%), radial-gradient(circle at 55% 80%, rgba(66, 217, 255, .09), transparent 32%), linear-gradient(180deg, #09060e 0%, #050407 100%);
+            overflow-x: hidden
+        }
+
+        body:before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: .18;
+            background-image: linear-gradient(rgba(255, 255, 255, .025) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .025) 1px, transparent 1px);
+            background-size: 42px 42px;
+            mask-image: linear-gradient(to bottom, #000, transparent 80%)
+        }
+
+        .wrap {
+            width: min(1080px, 100%);
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            gap: 28px;
+            align-items: stretch
+        }
+
+        .brand,
+        .card {
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, .13);
+            border-radius: 32px;
+            box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .10);
+            overflow: hidden;
+            backdrop-filter: blur(18px)
+        }
+
+        .brand {
+            min-height: 620px;
+            padding: 54px;
+            background: linear-gradient(135deg, rgba(20, 10, 30, .92), rgba(54, 14, 72, .77));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            perspective: 1200px
+        }
+
+        .brand:before {
+            content: "";
+            position: absolute;
+            width: 380px;
+            height: 380px;
+            border-radius: 50%;
+            right: -110px;
+            top: -90px;
+            background: radial-gradient(circle, rgba(255, 96, 190, .33), transparent 65%);
+            filter: blur(8px)
+        }
+
+        .logo {
+            position: relative;
+            z-index: 2;
+            font-size: 28px;
+            font-weight: 950;
+            letter-spacing: .5px
+        }
+
+        .logo span {
+            background: linear-gradient(90deg, var(--pink2), #c583ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent
+        }
+
+        .logo small {
+            display: block;
+            margin-top: 4px;
+            font-size: 9px;
+            letter-spacing: 4px;
+            color: #9e95a7
+        }
+
+        .brand h1 {
+            position: relative;
+            z-index: 2;
+            font-size: clamp(44px, 5vw, 72px);
+            line-height: .98;
+            letter-spacing: -3px;
+            margin: 52px 0 18px
+        }
+
+        .brand h1 span {
+            background: linear-gradient(90deg, #ff62b8, #d38cff 55%, #74e7ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent
+        }
+
+        .brand p {
+            position: relative;
+            z-index: 2;
+            color: #d5cadb;
+            line-height: 1.75;
+            max-width: 560px
+        }
+
+        .orb {
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            right: 55px;
+            bottom: 55px;
+            background: radial-gradient(circle at 35% 30%, #ffb1dc 0 6%, #e060bd 22%, #7d3ce6 54%, #160f28 76%);
+            box-shadow: 0 0 70px rgba(203, 74, 224, .38), inset -25px -30px 60px rgba(0, 0, 0, .35);
+            transform: rotateX(10deg) rotateY(-12deg);
+            animation: float 5s ease-in-out infinite
+        }
+
+        @keyframes float {
+            50% {
+                transform: translateY(-14px) rotateX(10deg) rotateY(-12deg)
+            }
+        }
+
+        .card {
+            padding: 34px;
+            background: linear-gradient(145deg, rgba(25, 17, 34, .95), rgba(12, 9, 18, .98));
+            display: flex;
+            flex-direction: column;
+            justify-content: center
+        }
+
+        .card h2 {
+            font-size: 34px;
+            margin: 0 0 8px
+        }
+
+        .muted {
+            color: var(--muted);
+            line-height: 1.6
+        }
+
+        .field {
+            margin-top: 18px
+        }
+
+        .field label {
+            display: block;
+            margin: 0 0 8px;
+            font-size: 12px;
+            font-weight: 850;
+            color: #e8dfed
+        }
+
+        .input3d {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 14px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, .10);
+            background: linear-gradient(180deg, #1b1324, #100b17);
+            box-shadow: inset 0 2px 3px rgba(255, 255, 255, .03), inset 0 -5px 12px rgba(0, 0, 0, .22), 0 10px 25px rgba(0, 0, 0, .16)
+        }
+
+        .input3d:focus-within {
+            border-color: rgba(255, 92, 181, .55);
+            box-shadow: 0 0 0 4px rgba(255, 63, 159, .08), inset 0 2px 3px rgba(255, 255, 255, .03)
+        }
+
+        .input3d span {
+            font-size: 18px
+        }
+
+        .input3d input {
+            width: 100%;
+            padding: 15px 0;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: #fff;
+            font: inherit
+        }
+
+        .btn {
+            width: 100%;
+            margin-top: 22px;
+            padding: 15px 18px;
+            border: 0;
+            border-radius: 16px;
+            color: #fff;
+            font-weight: 950;
+            font-size: 15px;
+            cursor: pointer;
+            background: linear-gradient(145deg, #ff5cac, #c239df 52%, #7548f1);
+            box-shadow: 0 7px 0 #5c1d86, 0 16px 30px rgba(214, 57, 178, .34), inset 0 2px 0 rgba(255, 255, 255, .30);
+            transition: .18s transform, .18s box-shadow
+        }
+
+        .btn:hover {
+            transform: translateY(-2px)
+        }
+
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 3px 0 #5c1d86, 0 8px 18px rgba(214, 57, 178, .28), inset 0 1px 0 rgba(255, 255, 255, .25)
+        }
+
+        .switch {
+            margin-top: 18px;
+            text-align: center;
+            color: #cfc6d4;
+            font-size: 13px
+        }
+
+        .switch a {
+            color: #ff86ce;
+            text-decoration: none;
+            font-weight: 850
+        }
+
+        .err {
+            display: none;
+            margin-top: 14px;
+            padding: 11px 13px;
+            border-radius: 13px;
+            background: rgba(255, 75, 110, .10);
+            border: 1px solid rgba(255, 75, 110, .25);
+            color: #ffc2cc;
+            font-size: 12px
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            background: rgba(0, 0, 0, .70);
+            backdrop-filter: blur(14px);
+            place-items: center;
+            padding: 18px
+        }
+
+        .modal.show {
+            display: grid
+        }
+
+        .agebox {
+            width: min(440px, 100%);
+            padding: 30px;
+            border-radius: 28px;
+            background: linear-gradient(145deg, #1a1024, #0c0911);
+            border: 1px solid rgba(255, 255, 255, .14);
+            box-shadow: 0 35px 100px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .08);
+            text-align: center;
+            transform: perspective(900px) rotateX(2deg)
+        }
+
+        .ageIcon {
+            width: 74px;
+            height: 74px;
+            margin: auto;
+            border-radius: 22px;
+            display: grid;
+            place-items: center;
+            font-size: 34px;
+            background: linear-gradient(145deg, #ff68b9, #7e52f0);
+            box-shadow: 0 9px 0 #5e247f, 0 18px 38px rgba(199, 65, 199, .32)
+        }
+
+        .ageActions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 22px
+        }
+
+        .ageActions button {
+            padding: 14px;
+            border-radius: 15px;
+            border: 0;
+            font-weight: 900;
+            cursor: pointer
+        }
+
+        .yes {
+            color: #fff;
+            background: linear-gradient(145deg, #25d690, #149767);
+            box-shadow: 0 6px 0 #0b6847
+        }
+
+        .no {
+            color: #fff;
+            background: linear-gradient(145deg, #ff5b75, #c62845);
+            box-shadow: 0 6px 0 #8a1b30
+        }
+
+        .note {
+            font-size: 11px;
+            color: #948a9c;
+            margin-top: 15px
+        }
+
+        @media(max-width:820px) {
+            .wrap {
+                grid-template-columns: 1fr
+            }
+
+            .brand {
+                display: none
+            }
+
+            .card {
+                min-height: calc(100vh - 48px);
+                border-radius: 28px;
+                padding: 28px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <section class="brand">
+            <div class="logo">ARINA <span>WEB CALL</span><small>CONHEÇA • CONVERSE • CONECTE-SE</small></div>
+            <h1>Bem-vindo de <span>volta</span></h1>
+            <p>Entre com o mesmo número de telefone e senha usados no cadastro.</p>
+            <div class="orb"></div>
+        </section>
+        <section class="card">
+            <h2>Entrar</h2>
+            <p class="muted">Acesse sua conta para continuar.</p>
+            <div class="field"><label>Número de telefone</label>
+                <div class="input3d"><span>🇧🇷 +55</span><input id="phone" inputmode="numeric" autocomplete="tel"
+                        placeholder="11 99999-9999"></div>
+            </div>
+            <div class="field"><label>Senha</label>
+                <div class="input3d"><span>🔒</span><input id="password" type="password" autocomplete="current-password"
+                        placeholder="Sua senha"></div>
+            </div>
+            <div id="err" class="err"></div><button class="btn" onclick="loginUser()">Entrar</button>
+            <div class="switch">Ainda não tem conta? <a href="register.html">Criar conta</a></div>
+        </section>
+    </div>
+    <div id="ageModal" class="modal">
+        <div class="agebox">
+            <div class="ageIcon">18+</div>
+            <h2>Você tem 18 anos ou mais?</h2>
+            <p class="muted">Confirme sua idade para acessar o Arina Web Call.</p>
+            <div class="ageActions"><button class="yes" onclick="ageYes()">Sim, tenho 18+</button><button class="no"
+                    onclick="ageNo()">Não</button></div>
+        </div>
+    </div>
+<script>
+
+const LOGIN_VALID_DAYS = 15;
+const SITE_URL = 'index.html';
+
+function cleanPhone(v){
+  return String(v || '').replace(/\D/g,'');
+}
+
+function getSavedUser(){
+  try{
+    return JSON.parse(
+      localStorage.getItem('arinaUser') || 'null'
+    );
+  }catch(e){
+    return null;
+  }
+}
+
+function getLoginSession(){
+  try{
+    return JSON.parse(
+      localStorage.getItem('arinaLoginSession') || 'null'
+    );
+  }catch(e){
+    return null;
+  }
+}
+
+function loginStillValid(){
+
+  const session = getLoginSession();
+
+  return !!(
+    session &&
+    session.loggedIn === true &&
+    Number(session.expiresAt) > Date.now()
+  );
+}
+
+
+// =======================================
+// ALREADY LOGIN HAI TO DIRECT WEBSITE
+// =======================================
+
+function checkExistingLogin(){
+
+  if(loginStillValid()){
+    location.replace(SITE_URL);
+  }
+
+}
+
+
+// =======================================
+// LOGIN / FIRST-TIME CREATE
+// =======================================
+
+function loginUser(){
+
+  const p = cleanPhone(phone.value);
+  const pw = password.value.trim();
+
+  err.style.display = 'none';
+
+
+  if(p.length < 10 || p.length > 11){
+
+    err.textContent =
+      'Digite um número de telefone válido.';
+
+    err.style.display = 'block';
+
+    return;
+  }
+
+
+  if(pw.length < 4){
+
+    err.textContent =
+      'A senha deve ter pelo menos 4 caracteres.';
+
+    err.style.display = 'block';
+
+    return;
+  }
+
+
+  let user = getSavedUser();
+
+
+  // =======================================
+  // FIRST TIME USER
+  // Account localStorage me create
+  // =======================================
+
+  if(!user){
+
+    user = {
+      id: Date.now(),
+      phone: p,
+      password: pw,
+      createdAt: Date.now()
+    };
+
+
+    localStorage.setItem(
+      'arinaUser',
+      JSON.stringify(user)
+    );
+
+  }
+
+  // =======================================
+  // EXISTING USER CHECK
+  // =======================================
+
+  else{
+
+    if(
+      cleanPhone(user.phone) !== p ||
+      user.password !== pw
+    ){
+
+      err.textContent =
+        'Número ou senha incorretos.';
+
+      err.style.display = 'block';
+
+      return;
+    }
+
+  }
+
+
+  // =======================================
+  // 15 DAY LOGIN SESSION
+  // =======================================
+
+  const expiresAt =
+    Date.now() +
+    LOGIN_VALID_DAYS *
+    24 *
+    60 *
+    60 *
+    1000;
+
+
+  localStorage.setItem(
+    'arinaLoginSession',
+    JSON.stringify({
+      loggedIn: true,
+      userId: user.id,
+      phone: p,
+      expiresAt: expiresAt
+    })
+  );
+
+
+  // 18+ POPUP
+  ageModal.classList.add('show');
+
+}
+
+
+// =======================================
+// AGE YES
+// =======================================
+
+function ageYes(){
+
+  localStorage.setItem(
+    'arinaAge18',
+    'yes'
+  );
+
+  location.replace(SITE_URL);
+
+}
+
+
+// =======================================
+// AGE NO
+// =======================================
+
+function ageNo(){
+
+  localStorage.setItem(
+    'arinaAge18',
+    'no'
+  );
+
+  localStorage.removeItem(
+    'arinaLoginSession'
+  );
+
+  ageModal.classList.remove('show');
+
+  err.textContent =
+    'O acesso é permitido somente para maiores de 18 anos.';
+
+  err.style.display =
+    'block';
+
+}
+
+
+// =======================================
+// BRAZIL PHONE FORMAT
+// =======================================
+
+phone.addEventListener(
+  'input',
+  function(){
+
+    let v =
+      this.value
+      .replace(/\D/g,'')
+      .slice(0,11);
+
+
+    if(v.length > 2){
+
+      v =
+        '(' +
+        v.slice(0,2) +
+        ') ' +
+        v.slice(2);
+
+    }
+
+
+    this.value = v;
+
+  }
+);
+
+
+// =======================================
+// ENTER PRESS
+// =======================================
+
+password.addEventListener(
+  'keydown',
+  function(e){
+
+    if(e.key === 'Enter'){
+      loginUser();
+    }
+
+  }
+);
+
+
+// =======================================
+// START
+// =======================================
+
+checkExistingLogin();
+
+</script>
+</body>
+
+</html>

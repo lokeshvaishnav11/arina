@@ -1,0 +1,2148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Arina Node Admin</title>
+
+<style>
+:root{
+  --bg:#07050b;
+  --panel:#100b18;
+  --panel2:#171021;
+  --text:#fff;
+  --muted:#b8aec2;
+  --pink:#ff3f9f;
+  --violet:#8b5cf6;
+  --green:#22c783;
+  --red:#ff4d67;
+  --line:rgba(255,255,255,.10);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:linear-gradient(180deg,#09060e,#050407);
+  color:#fff;
+  font-family:Inter,system-ui,Arial;
+}
+
+.login{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+}
+
+.box{
+  width:min(420px,92vw);
+  padding:26px;
+  border-radius:22px;
+  background:#171020;
+  border:1px solid var(--line);
+}
+
+input,
+select{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid #33283d;
+  background:#100b18;
+  color:#fff;
+}
+
+input[type="file"]{
+  cursor:pointer;
+}
+
+.btn{
+  padding:11px 14px;
+  border:0;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--pink),var(--violet));
+  color:#fff;
+  font-weight:850;
+  cursor:pointer;
+}
+
+.btn:hover{
+  opacity:.92;
+}
+
+.btn-green{
+  background:linear-gradient(135deg,#15b86f,#22c783);
+}
+
+.btn-red{
+  background:linear-gradient(135deg,#ff3f5f,#d91d43);
+}
+
+.btn-small{
+  padding:8px 11px;
+  font-size:12px;
+}
+
+.layout{
+  display:none;
+  grid-template-columns:240px 1fr;
+  min-height:100vh;
+}
+
+.side{
+  padding:20px;
+  background:#0d0913;
+  border-right:1px solid var(--line);
+}
+
+.logo{
+  font-size:22px;
+  font-weight:950;
+  margin-bottom:18px;
+}
+
+.logo span{
+  color:#ff74c6;
+}
+
+.nav button{
+  display:block;
+  width:100%;
+  padding:12px;
+  margin:6px 0;
+  border:0;
+  border-radius:12px;
+  background:transparent;
+  color:#ddd;
+  text-align:left;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.nav button:hover,
+.nav button.active{
+  background:linear-gradient(135deg,var(--pink),var(--violet));
+  color:#fff;
+}
+
+.main{
+  padding:22px;
+}
+
+.section{
+  display:none;
+}
+
+.section.active{
+  display:block;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+}
+
+.card,
+.panel{
+  background:linear-gradient(145deg,#171020,#0c0911);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:18px;
+}
+
+.panel{
+  margin-top:18px;
+}
+
+.card small{
+  color:var(--muted);
+}
+
+.card h2{
+  margin:7px 0 0;
+}
+
+.wrap{
+  overflow:auto;
+  max-height:65vh;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:850px;
+}
+
+th,
+td{
+  padding:11px 9px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  text-align:left;
+  font-size:13px;
+}
+
+.photo{
+  width:52px;
+  height:65px;
+  object-fit:cover;
+  border-radius:10px;
+  background:#20172a;
+}
+
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.preview{
+  width:130px;
+  height:160px;
+  object-fit:cover;
+  border-radius:14px;
+  margin-top:12px;
+  background:#21172b;
+  border:1px solid var(--line);
+}
+
+.muted{
+  color:var(--muted);
+}
+
+.success{
+  color:#37db98;
+}
+
+.error{
+  color:#ff6b7d;
+}
+
+.actions{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+
+.form-title{
+  margin-top:0;
+}
+
+.profile-count{
+  color:#ff78c7;
+}
+
+.upload-note{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:8px;
+}
+
+@media(max-width:950px){
+
+  .cards{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
+@media(max-width:720px){
+
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .side{
+    border-right:none;
+    border-bottom:1px solid var(--line);
+  }
+
+  .cards{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .main{
+    padding:12px;
+  }
+
+  .grid2{
+    grid-template-columns:1fr;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+
+<!-- =========================================
+LOGIN
+========================================= -->
+
+<div id="loginView" class="login">
+
+<form class="box" onsubmit="login(event)">
+
+<h1>Arina Admin</h1>
+
+<p class="muted">
+Node.js + MySQL secure login
+</p>
+
+<input
+  id="loginUser"
+  placeholder="Username"
+  required
+>
+
+<br><br>
+
+<input
+  id="loginPass"
+  type="password"
+  placeholder="Password"
+  required
+>
+
+<br><br>
+
+<button
+  class="btn"
+  style="width:100%"
+>
+Login
+</button>
+
+<p
+  id="loginMsg"
+  class="muted"
+></p>
+
+</form>
+
+</div>
+
+
+
+<!-- =========================================
+ADMIN APP
+========================================= -->
+
+<div
+  id="app"
+  class="layout"
+>
+
+<aside class="side">
+
+<div class="logo">
+ARINA <span>ADMIN</span>
+</div>
+
+<div class="nav">
+
+<button
+  class="active"
+  onclick="show('dashboard',this)"
+>
+📊 Dashboard
+</button>
+
+<button
+  onclick="show('profiles',this)"
+>
+👤 Profiles
+</button>
+
+<button
+  onclick="show('users',this)"
+>
+👥 Users
+</button>
+
+<button
+  onclick="show('payments',this)"
+>
+💳 Payments
+</button>
+
+<button
+  onclick="show('password',this)"
+>
+🔐 Password
+</button>
+
+<button
+  onclick="logout()"
+>
+🚪 Logout
+</button>
+
+</div>
+
+</aside>
+
+
+
+<main class="main">
+
+
+<!-- =========================================
+DASHBOARD
+========================================= -->
+
+<section
+  id="dashboard"
+  class="section active"
+>
+
+<h1>Dashboard</h1>
+
+<div class="cards">
+
+<div class="card">
+<small>Profiles</small>
+<h2 id="sProfiles">0</h2>
+</div>
+
+<div class="card">
+<small>Online Users</small>
+<h2 id="sOnline">0</h2>
+</div>
+
+<div class="card">
+<small>Registered</small>
+<h2 id="sRegistered">0</h2>
+</div>
+
+<div class="card">
+<small>Today</small>
+<h2 id="sToday">
+R$ 0.00
+</h2>
+</div>
+
+<div class="card">
+<small>Revenue</small>
+<h2 id="sRevenue">
+R$ 0.00
+</h2>
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================================
+PROFILES
+========================================= -->
+
+<section
+  id="profiles"
+  class="section"
+>
+
+<h1>
+Profiles
+<span
+  id="profileCount"
+  class="profile-count"
+>
+0
+</span>
+</h1>
+
+
+<!-- ADD PROFILE -->
+
+<div class="panel">
+
+<h2 class="form-title">
+➕ Add New Profile
+</h2>
+
+<form
+  id="addProfileForm"
+  onsubmit="addProfile(event)"
+>
+
+<div class="grid2">
+
+<input
+  id="addName"
+  name="name"
+  placeholder="Name"
+  required
+>
+
+<input
+  id="addAge"
+  name="age"
+  type="number"
+  min="18"
+  max="99"
+  placeholder="Age"
+  required
+>
+
+<input
+  id="addCity"
+  name="city"
+  placeholder="City"
+  required
+>
+
+<input
+  id="addCountry"
+  name="country"
+  placeholder="Country"
+  value="Brazil"
+  required
+>
+
+<select
+  id="addGender"
+  name="gender"
+>
+
+<option value="Female">
+Female
+</option>
+
+<option value="Male">
+Male
+</option>
+
+<option value="Other">
+Other
+</option>
+
+</select>
+
+
+<select
+  id="addStatus"
+  name="status"
+>
+
+<option value="online">
+online
+</option>
+
+<option value="busy">
+busy
+</option>
+
+<option value="offline">
+offline
+</option>
+
+</select>
+
+</div>
+
+
+<div style="margin-top:14px">
+
+<input
+  id="addImage"
+  name="image"
+  type="file"
+  accept="image/jpeg,image/png,image/webp"
+  onchange="previewAddImage(event)"
+  required
+>
+
+<div class="upload-note">
+JPG, PNG or WEBP • Maximum 5MB
+</div>
+
+<img
+  id="addPreview"
+  class="preview"
+  style="display:none"
+>
+
+</div>
+
+
+<br>
+
+<button
+  id="addProfileBtn"
+  type="submit"
+  class="btn btn-green"
+>
+➕ Add Profile
+</button>
+
+<p
+  id="addProfileMsg"
+  class="muted"
+></p>
+
+</form>
+
+</div>
+
+
+
+<!-- PROFILE LIST -->
+
+<div class="panel">
+
+<h2>
+Profile List
+</h2>
+
+<div class="wrap">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Photo</th>
+<th>ID</th>
+<th>Name</th>
+<th>Age</th>
+<th>Location</th>
+<th>Gender</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+
+</thead>
+
+<tbody id="profileRows">
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+
+<!-- EDIT PROFILE -->
+
+<div
+  class="panel"
+  id="editPanel"
+  style="display:none"
+>
+
+<h2>
+✏️ Edit Profile
+</h2>
+
+<input
+  type="hidden"
+  id="pId"
+>
+
+
+<div class="grid2">
+
+<input
+  id="pName"
+  placeholder="Name"
+>
+
+<input
+  id="pAge"
+  type="number"
+  min="18"
+  max="99"
+  placeholder="Age"
+>
+
+<input
+  id="pCity"
+  placeholder="City"
+>
+
+<input
+  id="pCountry"
+  placeholder="Country"
+>
+
+
+<select id="pGender">
+
+<option value="Female">
+Female
+</option>
+
+<option value="Male">
+Male
+</option>
+
+<option value="Other">
+Other
+</option>
+
+</select>
+
+
+<select id="pStatus">
+
+<option value="online">
+online
+</option>
+
+<option value="busy">
+busy
+</option>
+
+<option value="offline">
+offline
+</option>
+
+</select>
+
+</div>
+
+
+<div style="margin-top:14px">
+
+<label>
+Change Photo (optional)
+</label>
+
+<br><br>
+
+<input
+  id="pImage"
+  type="file"
+  accept="image/jpeg,image/png,image/webp"
+  onchange="previewEditImage(event)"
+>
+
+<div class="upload-note">
+Photo change nahi karni ho to file select mat karo.
+</div>
+
+<img
+  id="pPreview"
+  class="preview"
+>
+
+</div>
+
+
+<br>
+
+<div class="actions">
+
+<button
+  type="button"
+  class="btn btn-green"
+  onclick="saveProfile()"
+>
+💾 Save Profile
+</button>
+
+<button
+  type="button"
+  class="btn"
+  onclick="closeEdit()"
+>
+Cancel
+</button>
+
+</div>
+
+<p
+  id="editProfileMsg"
+  class="muted"
+></p>
+
+</div>
+
+
+</section>
+
+
+
+<!-- =========================================
+USERS
+========================================= -->
+
+<section
+  id="users"
+  class="section"
+>
+
+<h1>Users</h1>
+
+<div class="panel">
+
+<div class="wrap">
+
+<table>
+
+<thead>
+
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Email</th>
+<th>Last Seen</th>
+<th>Total Paid</th>
+</tr>
+
+</thead>
+
+<tbody id="userRows">
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================================
+PAYMENTS
+========================================= -->
+
+<section
+  id="payments"
+  class="section"
+>
+
+<h1>Payments</h1>
+
+<div class="panel">
+
+<div class="wrap">
+
+<table>
+
+<thead>
+
+<tr>
+<th>ID</th>
+<th>User</th>
+<th>Purpose</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Date</th>
+</tr>
+
+</thead>
+
+<tbody id="paymentRows">
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================================
+PASSWORD
+========================================= -->
+
+<section
+  id="password"
+  class="section"
+>
+
+<h1>
+Change Password
+</h1>
+
+<div
+  class="panel"
+  style="max-width:500px"
+>
+
+<input
+  id="currentPass"
+  type="password"
+  placeholder="Current password"
+>
+
+<br><br>
+
+<input
+  id="newPass"
+  type="password"
+  placeholder="New password"
+>
+
+<br><br>
+
+<button
+  class="btn"
+  onclick="changePassword()"
+>
+Update Password
+</button>
+
+<p id="passMsg"></p>
+
+</div>
+
+</section>
+
+
+</main>
+
+</div>
+
+
+
+<script>
+
+let profiles = [];
+
+
+// ======================================================
+// NORMAL JSON API REQUEST
+// ======================================================
+
+async function req(url,opt={}){
+
+  const r = await fetch(
+    url,
+    {
+      credentials:'same-origin',
+
+      headers:{
+        'Content-Type':'application/json',
+        ...(opt.headers || {})
+      },
+
+      ...opt
+    }
+  );
+
+  const d = await r
+    .json()
+    .catch(
+      ()=>({
+        ok:false,
+        error:'Invalid response'
+      })
+    );
+
+  if(!r.ok){
+
+    throw new Error(
+      d.error || 'Request failed'
+    );
+
+  }
+
+  return d;
+}
+
+
+
+// ======================================================
+// MULTIPART / FILE UPLOAD REQUEST
+// Important: Content-Type manually set nahi karna.
+// Browser boundary automatically set karega.
+// ======================================================
+
+async function uploadReq(
+  url,
+  formData,
+  method='POST'
+){
+
+  const r = await fetch(
+    url,
+    {
+      method:method,
+
+      credentials:'same-origin',
+
+      body:formData
+    }
+  );
+
+
+  const d = await r
+    .json()
+    .catch(
+      ()=>({
+        ok:false,
+        error:'Invalid response'
+      })
+    );
+
+
+  if(!r.ok){
+
+    throw new Error(
+      d.error ||
+      'Upload request failed'
+    );
+
+  }
+
+
+  return d;
+}
+
+
+
+// ======================================================
+// BOOT
+// ======================================================
+
+async function boot(){
+
+  try{
+
+    const me =
+      await req('/auth/me');
+
+
+    if(me.authenticated){
+
+      loginView.style.display =
+        'none';
+
+      app.style.display =
+        'grid';
+
+      await loadAll();
+
+    }else{
+
+      loginView.style.display =
+        'grid';
+
+      app.style.display =
+        'none';
+
+    }
+
+  }catch(e){
+
+    loginView.style.display =
+      'grid';
+
+    app.style.display =
+      'none';
+
+  }
+
+}
+
+
+
+// ======================================================
+// LOGIN
+// ======================================================
+
+async function login(e){
+
+  e.preventDefault();
+
+  loginMsg.textContent =
+    'Logging in...';
+
+
+  try{
+
+    await req(
+      '/auth/login',
+      {
+        method:'POST',
+
+        body:JSON.stringify({
+          username:
+            loginUser.value,
+
+          password:
+            loginPass.value
+        })
+      }
+    );
+
+
+    loginMsg.textContent = '';
+
+    await boot();
+
+
+  }catch(err){
+
+    loginMsg.textContent =
+      err.message;
+
+  }
+
+}
+
+
+
+// ======================================================
+// LOGOUT
+// ======================================================
+
+async function logout(){
+
+  try{
+
+    await req(
+      '/auth/logout',
+      {
+        method:'POST'
+      }
+    );
+
+  }catch(e){}
+
+
+  location.reload();
+
+}
+
+
+
+// ======================================================
+// SHOW SECTION
+// ======================================================
+
+function show(id,b){
+
+  document
+    .querySelectorAll(
+      '.section'
+    )
+    .forEach(
+      x=>
+        x.classList.remove(
+          'active'
+        )
+    );
+
+
+  document
+    .getElementById(id)
+    .classList.add(
+      'active'
+    );
+
+
+  document
+    .querySelectorAll(
+      '.nav button'
+    )
+    .forEach(
+      x=>
+        x.classList.remove(
+          'active'
+        )
+    );
+
+
+  if(b){
+
+    b.classList.add(
+      'active'
+    );
+
+  }
+
+}
+
+
+
+// ======================================================
+// LOAD ALL
+// ======================================================
+
+async function loadAll(){
+
+  await Promise.all([
+    loadStats(),
+    loadProfiles(),
+    loadUsers(),
+    loadPayments()
+  ]);
+
+}
+
+
+
+// ======================================================
+// DASHBOARD STATS
+// ======================================================
+
+async function loadStats(){
+
+  try{
+
+    const d =
+      await req(
+        '/admin-api/stats'
+      );
+
+
+    sProfiles.textContent =
+      d.stats.profiles;
+
+
+    sOnline.textContent =
+      d.stats.online;
+
+
+    sRegistered.textContent =
+      d.stats.registered;
+
+
+    sToday.textContent =
+      'R$ ' +
+      Number(
+        d.stats.todayPayments
+      ).toFixed(2);
+
+
+    sRevenue.textContent =
+      'R$ ' +
+      Number(
+        d.stats.totalRevenue
+      ).toFixed(2);
+
+  }catch(e){
+
+    console.error(
+      'Stats:',
+      e
+    );
+
+  }
+
+}
+
+
+
+// ======================================================
+// LOAD PROFILES
+// ======================================================
+
+async function loadProfiles(){
+
+  try{
+
+    const d =
+      await req(
+        '/admin-api/profiles'
+      );
+
+
+    profiles =
+      d.profiles || [];
+
+
+    profileCount.textContent =
+      profiles.length;
+
+
+    profileRows.innerHTML =
+      profiles.map(
+        p => `
+
+        <tr>
+
+          <td>
+            <img
+              class="photo"
+              src="${escapeHtml(p.img_url)}"
+              onerror="this.style.opacity='.25'"
+            >
+          </td>
+
+          <td>
+            ${Number(p.id)}
+          </td>
+
+          <td>
+            ${escapeHtml(p.name)}
+          </td>
+
+          <td>
+            ${Number(p.age)}
+          </td>
+
+          <td>
+            ${escapeHtml(p.city)},
+            ${escapeHtml(p.country)}
+          </td>
+
+          <td>
+            ${escapeHtml(p.gender)}
+          </td>
+
+          <td>
+            ${escapeHtml(p.status)}
+          </td>
+
+          <td>
+
+            <div class="actions">
+
+              <button
+                class="btn btn-small"
+                onclick="editProfile(${Number(p.id)})"
+              >
+                Edit
+              </button>
+
+              <button
+                class="btn btn-red btn-small"
+                onclick="deleteProfile(${Number(p.id)})"
+              >
+                Delete
+              </button>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+        `
+      ).join('');
+
+
+  }catch(e){
+
+    console.error(
+      'Profiles:',
+      e
+    );
+
+    profileRows.innerHTML =
+      `<tr>
+        <td colspan="8">
+          ${escapeHtml(e.message)}
+        </td>
+      </tr>`;
+
+  }
+
+}
+
+
+
+// ======================================================
+// PREVIEW ADD PROFILE IMAGE
+// ======================================================
+
+function previewAddImage(e){
+
+  const file =
+    e.target.files[0];
+
+
+  if(!file){
+
+    addPreview.style.display =
+      'none';
+
+    addPreview.src = '';
+
+    return;
+
+  }
+
+
+  addPreview.src =
+    URL.createObjectURL(file);
+
+
+  addPreview.style.display =
+    'block';
+
+}
+
+
+
+// ======================================================
+// ADD PROFILE
+// ======================================================
+
+async function addProfile(e){
+
+  e.preventDefault();
+
+
+  const image =
+    addImage.files[0];
+
+
+  if(!image){
+
+    addProfileMsg.className =
+      'error';
+
+    addProfileMsg.textContent =
+      'Profile image select karo.';
+
+    return;
+
+  }
+
+
+  const age =
+    Number(addAge.value);
+
+
+  if(
+    !Number.isInteger(age) ||
+    age < 18 ||
+    age > 99
+  ){
+
+    addProfileMsg.className =
+      'error';
+
+    addProfileMsg.textContent =
+      'Age 18 se 99 ke beech honi chahiye.';
+
+    return;
+
+  }
+
+
+  const formData =
+    new FormData();
+
+
+  formData.append(
+    'name',
+    addName.value.trim()
+  );
+
+
+  formData.append(
+    'age',
+    age
+  );
+
+
+  formData.append(
+    'city',
+    addCity.value.trim()
+  );
+
+
+  formData.append(
+    'country',
+    addCountry.value.trim()
+  );
+
+
+  formData.append(
+    'gender',
+    addGender.value
+  );
+
+
+  formData.append(
+    'status',
+    addStatus.value
+  );
+
+
+  formData.append(
+    'image',
+    image
+  );
+
+
+  addProfileBtn.disabled =
+    true;
+
+
+  addProfileBtn.textContent =
+    'Uploading...';
+
+
+  addProfileMsg.className =
+    'muted';
+
+
+  addProfileMsg.textContent =
+    'Profile add ho rahi hai...';
+
+
+  try{
+
+    const d =
+      await uploadReq(
+        '/admin-api/profiles',
+        formData,
+        'POST'
+      );
+
+
+    addProfileMsg.className =
+      'success';
+
+
+    addProfileMsg.textContent =
+      d.message ||
+      'Profile added successfully.';
+
+
+    addProfileForm.reset();
+
+
+    addCountry.value =
+      'Brazil';
+
+
+    addStatus.value =
+      'online';
+
+
+    addGender.value =
+      'Female';
+
+
+    addPreview.src = '';
+
+
+    addPreview.style.display =
+      'none';
+
+
+    await Promise.all([
+      loadProfiles(),
+      loadStats()
+    ]);
+
+
+  }catch(err){
+
+    addProfileMsg.className =
+      'error';
+
+
+    addProfileMsg.textContent =
+      err.message;
+
+  }finally{
+
+    addProfileBtn.disabled =
+      false;
+
+
+    addProfileBtn.textContent =
+      '➕ Add Profile';
+
+  }
+
+}
+
+
+
+// ======================================================
+// EDIT PROFILE
+// ======================================================
+
+function editProfile(id){
+
+  const p =
+    profiles.find(
+      x =>
+        Number(x.id) ===
+        Number(id)
+    );
+
+
+  if(!p){
+    return;
+  }
+
+
+  editPanel.style.display =
+    'block';
+
+
+  pId.value =
+    p.id;
+
+
+  pName.value =
+    p.name || '';
+
+
+  pAge.value =
+    p.age || '';
+
+
+  pCity.value =
+    p.city || '';
+
+
+  pCountry.value =
+    p.country || '';
+
+
+  pGender.value =
+    p.gender || 'Female';
+
+
+  pStatus.value =
+    p.status || 'online';
+
+
+  pPreview.src =
+    p.img_url || '';
+
+
+  pImage.value = '';
+
+
+  editProfileMsg.textContent =
+    '';
+
+
+  editPanel.scrollIntoView({
+    behavior:'smooth',
+    block:'start'
+  });
+
+}
+
+
+
+// ======================================================
+// EDIT IMAGE PREVIEW
+// ======================================================
+
+function previewEditImage(e){
+
+  const file =
+    e.target.files[0];
+
+
+  if(!file){
+    return;
+  }
+
+
+  pPreview.src =
+    URL.createObjectURL(file);
+
+}
+
+
+
+// ======================================================
+// SAVE PROFILE
+// ======================================================
+
+async function saveProfile(){
+
+  const id =
+    Number(pId.value);
+
+
+  if(!id){
+    return;
+  }
+
+
+  const age =
+    Number(pAge.value);
+
+
+  if(
+    !pName.value.trim() ||
+    !Number.isInteger(age) ||
+    age < 18 ||
+    age > 99 ||
+    !pCity.value.trim() ||
+    !pCountry.value.trim()
+  ){
+
+    editProfileMsg.className =
+      'error';
+
+
+    editProfileMsg.textContent =
+      'Profile data sahi se fill karo.';
+
+    return;
+
+  }
+
+
+  const formData =
+    new FormData();
+
+
+  formData.append(
+    'name',
+    pName.value.trim()
+  );
+
+
+  formData.append(
+    'age',
+    age
+  );
+
+
+  formData.append(
+    'city',
+    pCity.value.trim()
+  );
+
+
+  formData.append(
+    'country',
+    pCountry.value.trim()
+  );
+
+
+  formData.append(
+    'gender',
+    pGender.value
+  );
+
+
+  formData.append(
+    'status',
+    pStatus.value
+  );
+
+
+  const newImage =
+    pImage.files[0];
+
+
+  if(newImage){
+
+    formData.append(
+      'image',
+      newImage
+    );
+
+  }
+
+
+  editProfileMsg.className =
+    'muted';
+
+
+  editProfileMsg.textContent =
+    'Saving...';
+
+
+  try{
+
+    const d =
+      await uploadReq(
+        '/admin-api/profiles/' + id,
+        formData,
+        'PUT'
+      );
+
+
+    editProfileMsg.className =
+      'success';
+
+
+    editProfileMsg.textContent =
+      d.message ||
+      'Profile saved.';
+
+
+    await Promise.all([
+      loadProfiles(),
+      loadStats()
+    ]);
+
+
+    setTimeout(
+      ()=>{
+        closeEdit();
+      },
+      600
+    );
+
+
+  }catch(e){
+
+    editProfileMsg.className =
+      'error';
+
+
+    editProfileMsg.textContent =
+      e.message;
+
+  }
+
+}
+
+
+
+// ======================================================
+// CLOSE EDIT
+// ======================================================
+
+function closeEdit(){
+
+  editPanel.style.display =
+    'none';
+
+
+  pId.value = '';
+
+  pImage.value = '';
+
+  editProfileMsg.textContent =
+    '';
+
+}
+
+
+
+// ======================================================
+// DELETE PROFILE
+// ======================================================
+
+async function deleteProfile(id){
+
+  const profile =
+    profiles.find(
+      p =>
+        Number(p.id) ===
+        Number(id)
+    );
+
+
+  const name =
+    profile
+      ? profile.name
+      : 'this profile';
+
+
+  const yes =
+    confirm(
+      'Delete ' +
+      name +
+      '? Image bhi server se delete ho jayegi.'
+    );
+
+
+  if(!yes){
+    return;
+  }
+
+
+  try{
+
+    const d =
+      await req(
+        '/admin-api/profiles/' + id,
+        {
+          method:'DELETE'
+        }
+      );
+
+
+    alert(
+      d.message ||
+      'Profile deleted'
+    );
+
+
+    if(
+      Number(pId.value) ===
+      Number(id)
+    ){
+
+      closeEdit();
+
+    }
+
+
+    await Promise.all([
+      loadProfiles(),
+      loadStats()
+    ]);
+
+
+  }catch(e){
+
+    alert(
+      e.message
+    );
+
+  }
+
+}
+
+
+
+// ======================================================
+// USERS
+// ======================================================
+
+async function loadUsers(){
+
+  try{
+
+    const d =
+      await req(
+        '/admin-api/users'
+      );
+
+
+    userRows.innerHTML =
+      d.users.map(
+        u => `
+
+        <tr>
+
+        <td>
+        ${Number(u.id)}
+        </td>
+
+        <td>
+        ${escapeHtml(u.name || '')}
+        </td>
+
+        <td>
+        ${escapeHtml(u.email || '')}
+        </td>
+
+        <td>
+        ${escapeHtml(u.last_seen || '')}
+        </td>
+
+        <td>
+        R$ ${Number(u.total_paid || 0).toFixed(2)}
+        </td>
+
+        </tr>
+
+        `
+      ).join('');
+
+
+  }catch(e){
+
+    console.error(
+      'Users:',
+      e
+    );
+
+  }
+
+}
+
+
+
+// ======================================================
+// PAYMENTS
+// ======================================================
+
+async function loadPayments(){
+
+  try{
+
+    const d =
+      await req(
+        '/admin-api/payments'
+      );
+
+
+    paymentRows.innerHTML =
+      d.payments.map(
+        p => `
+
+        <tr>
+
+        <td>
+        ${Number(p.id)}
+        </td>
+
+        <td>
+        ${escapeHtml(
+          p.user_name ||
+          'Unknown'
+        )}
+        </td>
+
+        <td>
+        ${escapeHtml(
+          p.purpose || ''
+        )}
+        </td>
+
+        <td>
+        R$ ${Number(
+          p.amount || 0
+        ).toFixed(2)}
+        </td>
+
+        <td>
+        ${escapeHtml(
+          p.status || ''
+        )}
+        </td>
+
+        <td>
+        ${escapeHtml(
+          p.created_at || ''
+        )}
+        </td>
+
+        </tr>
+
+        `
+      ).join('');
+
+
+  }catch(e){
+
+    console.error(
+      'Payments:',
+      e
+    );
+
+  }
+
+}
+
+
+
+// ======================================================
+// CHANGE PASSWORD
+// ======================================================
+
+async function changePassword(){
+
+  passMsg.className =
+    'muted';
+
+
+  passMsg.textContent =
+    'Updating...';
+
+
+  try{
+
+    await req(
+      '/auth/change-password',
+      {
+        method:'POST',
+
+        body:JSON.stringify({
+
+          currentPassword:
+            currentPass.value,
+
+          newPassword:
+            newPass.value
+
+        })
+      }
+    );
+
+
+    passMsg.className =
+      'success';
+
+
+    passMsg.textContent =
+      'Password updated.';
+
+
+    currentPass.value = '';
+
+    newPass.value = '';
+
+
+  }catch(e){
+
+    passMsg.className =
+      'error';
+
+
+    passMsg.textContent =
+      e.message;
+
+  }
+
+}
+
+
+
+// ======================================================
+// BASIC ESCAPE
+// ======================================================
+
+function escapeHtml(value){
+
+  return String(
+    value == null
+      ? ''
+      : value
+  )
+  .replaceAll(
+    '&',
+    '&amp;'
+  )
+  .replaceAll(
+    '<',
+    '&lt;'
+  )
+  .replaceAll(
+    '>',
+    '&gt;'
+  )
+  .replaceAll(
+    '"',
+    '&quot;'
+  )
+  .replaceAll(
+    "'",
+    '&#039;'
+  );
+
+}
+
+
+
+// ======================================================
+// START
+// ======================================================
+
+boot();
+
+</script>
+
+</body>
+</html>

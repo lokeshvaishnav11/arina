@@ -1,0 +1,601 @@
+!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Arina Web Call</title>
+
+<script>
+(function(){
+
+  try{
+
+    const session = JSON.parse(
+      localStorage.getItem(
+        'arinaLoginSession'
+      ) || 'null'
+    );
+
+
+    const valid =
+      session &&
+      session.loggedIn === true &&
+      Number(session.expiresAt) > Date.now();
+
+
+    if(!valid){
+
+      localStorage.removeItem(
+        'arinaLoginSession'
+      );
+
+      location.replace(
+        'login.html'
+      );
+
+    }
+
+  }catch(e){
+
+    localStorage.removeItem(
+      'arinaLoginSession'
+    );
+
+    location.replace(
+      'login.html'
+    );
+
+  }
+
+})();
+</script>
+<style>
+:root{
+  --bg:#07050b;--panel:#100b18;--panel2:#171021;--text:#fff;--muted:#b8aec2;
+  --pink:#ff3f9f;--pink2:#ff74c6;--violet:#8b5cf6;--cyan:#42d9ff;--green:#22c783;
+  --line:rgba(255,255,255,.10);--shadow:0 28px 80px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;background:
+ radial-gradient(circle at 15% 0%,rgba(255,63,159,.16),transparent 28%),
+ radial-gradient(circle at 90% 12%,rgba(139,92,246,.16),transparent 26%),
+ radial-gradient(circle at 55% 80%,rgba(66,217,255,.07),transparent 30%),
+ linear-gradient(180deg,#09060e 0%,#050407 100%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,#000,transparent 75%)}
+button,input,select,textarea{font:inherit}
+button{border:0;cursor:pointer}
+header{position:sticky;top:0;z-index:40;margin:0;padding:14px 4%;display:flex;gap:18px;align-items:center;justify-content:space-between;background:rgba(10,6,14,.68);backdrop-filter:blur(24px) saturate(150%);border-bottom:1px solid var(--line);box-shadow:0 12px 38px rgba(0,0,0,.22)}
+.logo{font-size:23px;font-weight:950;letter-spacing:.3px;text-shadow:0 0 28px rgba(255,63,159,.25)}.logo span{background:linear-gradient(90deg,var(--pink2),#c583ff);-webkit-background-clip:text;background-clip:text;color:transparent}.logo small{display:block;margin-top:2px;font-size:8px;letter-spacing:3.8px;color:#9e95a7}
+nav{display:flex;gap:8px;flex-wrap:wrap;padding:6px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.035);box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.navBtn,.topBtn{position:relative;padding:13px 18px;font-size:15px;font-weight:850;border-radius:13px;background:transparent;color:#d8d1dd;transition:.25s ease;transform:translateZ(0)}
+.navBtn:hover{background:rgba(255,255,255,.07);transform:translateY(-2px)}
+.navBtn.active,.primary{color:#fff;background:linear-gradient(135deg,var(--pink),#b747e9 52%,var(--violet));box-shadow:0 12px 28px rgba(214,57,178,.26),inset 0 1px 0 rgba(255,255,255,.28)}
+.navBtn.active:after{content:"";position:absolute;left:22%;right:22%;bottom:-7px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,#ff8ed2,transparent)}
+.topBtn{padding:13px 22px;font-size:15px;background:linear-gradient(180deg,#fff,#eee7f2);color:#6d1454;font-weight:800;box-shadow:0 10px 24px rgba(255,255,255,.09)}.topBtn:hover{transform:translateY(-2px) scale(1.02)}
+.page{display:none;padding:30px 5% 100px;animation:pageIn .38s ease}.page.active{display:block}@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hero{position:relative;min-height:520px;border-radius:34px;padding:58px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);align-items:center;gap:35px;overflow:hidden;background:linear-gradient(115deg,rgba(17,8,26,.94),rgba(55,15,71,.78) 55%,rgba(20,12,31,.88)),url("https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=1600&q=85") center/cover;border:1px solid rgba(255,255,255,.14);box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.15);perspective:1200px}
+.hero:before{content:"";position:absolute;width:440px;height:440px;border-radius:50%;right:-90px;top:-120px;background:radial-gradient(circle,rgba(255,96,190,.35),transparent 63%);filter:blur(8px)}
+.hero:after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;left:38%;bottom:-180px;background:radial-gradient(circle,rgba(102,74,255,.28),transparent 64%)}
+.heroCopiar{position:relative;z-index:2}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.07);backdrop-filter:blur(12px);color:#f5d8eb;font-size:12px;font-weight:800;letter-spacing:.7px;text-transform:uppercase}.eyebrow i{width:8px;height:8px;border-radius:50%;background:#2bdf92;box-shadow:0 0 16px #2bdf92}
+.hero h1{font-size:clamp(44px,5.4vw,74px);line-height:.98;letter-spacing:-3px;max-width:720px;margin:20px 0 18px}.hero h1 span{background:linear-gradient(90deg,#ff62b8,#d38cff 55%,#74e7ff);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}.hero p{max-width:610px;color:#d5cadb;line-height:1.75;font-size:16px}.heroActions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}.primary{padding:14px 23px;border-radius:16px;font-weight:850;transition:.24s ease}.primary:hover{transform:translateY(-3px);box-shadow:0 18px 34px rgba(214,57,178,.32),0 0 0 1px rgba(255,255,255,.1) inset}.ghostBtn{padding:14px 20px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#fff;font-weight:800;backdrop-filter:blur(8px)}
+.heroVisual{position:relative;z-index:2;min-height:390px;transform-style:preserve-3d}.heroOrb{position:absolute;inset:50% auto auto 50%;width:270px;height:270px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffb1dc 0 6%,#e060bd 22%,#7d3ce6 54%,#160f28 76%);box-shadow:0 0 70px rgba(203,74,224,.38),inset -25px -30px 60px rgba(0,0,0,.35);filter:saturate(115%)}
+.heroCard{position:absolute;width:180px;padding:10px;border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.20),rgba(255,255,255,.07));border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(16px);box-shadow:0 28px 50px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.25);transform-style:preserve-3d;animation:floatCard 5.8s ease-in-out infinite}.heroCard img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:18px;display:block}.heroCard b{display:block;margin:9px 3px 2px}.heroCard small{color:#c8bdcf;margin:0 3px 4px;display:block}.hc1{left:2%;top:8%;transform:rotateY(16deg) rotateZ(-6deg) translateZ(35px)}.hc2{right:0;top:22%;transform:rotateY(-17deg) rotateZ(7deg) translateZ(70px);animation-delay:-2s}.hc3{left:32%;bottom:-2%;transform:rotateX(8deg) rotateZ(2deg) translateZ(105px);animation-delay:-3.4s}@keyframes floatCard{0%,100%{margin-top:0}50%{margin-top:-13px}}
+.heroStats{display:flex;gap:9px;flex-wrap:wrap;margin-top:24px}.statPill{padding:9px 12px;border-radius:13px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.10);color:#cfc6d4;font-size:12px}.statPill b{color:#fff}
+.sectionTitle{margin:34px 0 16px;font-size:27px;letter-spacing:-.5px}.toolbar{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:12px;margin:20px 0 26px;padding:12px;border-radius:22px;background:rgba(255,255,255,.045);border:1px solid var(--line);backdrop-filter:blur(14px);box-shadow:0 18px 45px rgba(0,0,0,.18)}
+input,select,textarea{width:100%;padding:14px 15px;border-radius:15px;border:1px solid rgba(255,255,255,.10);background:linear-gradient(180deg,#191221,#110d18);color:#fff;outline:none;transition:.2s;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}input:focus,select:focus,textarea:focus{border-color:rgba(255,92,181,.55);box-shadow:0 0 0 4px rgba(255,63,159,.08)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}.card{position:relative;background:linear-gradient(145deg,rgba(27,19,36,.96),rgba(12,9,18,.98));border:1px solid rgba(255,255,255,.10);border-radius:26px;overflow:hidden;box-shadow:0 18px 42px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.04);transition:none}.card:hover{transform:none;border-color:rgba(255,255,255,.10);box-shadow:0 18px 42px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.04)}.photo{height:270px;position:relative;overflow:hidden}.photo:after{content:"";position:absolute;inset:auto 0 0;height:45%;background:linear-gradient(transparent,rgba(12,9,18,.88));pointer-events:none}.photo img{width:100%;height:100%;object-fit:cover;filter:none;transform:none} 
+.badge{position:absolute;z-index:2;top:12px;left:12px;background:rgba(18,196,128,.88);backdrop-filter:blur(8px);padding:7px 10px;border-radius:20px;font-size:10px;font-weight:900;box-shadow:0 7px 18px rgba(0,0,0,.18)}.badge.busy{background:rgba(245,158,11,.9)}.badge.offline{background:rgba(102,112,133,.9)}.heart{position:absolute;z-index:2;right:12px;top:12px;border-radius:50%;width:40px;height:40px;background:rgba(8,7,12,.58);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(8px);color:#fff;font-size:18px;transition:.2s}.heart:hover{transform:scale(1.08);background:rgba(255,63,159,.42)}
+.info{padding:16px}.info>b{font-size:16px}.muted{color:var(--muted);font-size:13px;line-height:1.65}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}.chat,.call,.detail{padding:12px;border-radius:13px;font-weight:800;transition:.2s}.chat{background:linear-gradient(180deg,#2b2135,#211829);color:#fff;border:1px solid rgba(255,255,255,.07)}.call{background:linear-gradient(135deg,#ff3f9f,#884be9);color:#fff;box-shadow:0 10px 22px rgba(185,54,184,.18)}.detail{width:100%;margin-top:9px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.075);color:#fff}.chat:hover,.call:hover,.detail:hover{transform:none}
+.panel{max-width:900px;margin:auto;background:linear-gradient(145deg,rgba(25,17,34,.94),rgba(12,9,18,.98));padding:30px;border-radius:28px;border:1px solid var(--line);box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.05)}.wallet{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,rgba(255,63,159,.15),rgba(139,92,246,.16));padding:20px;border-radius:21px;margin:20px 0;border:1px solid rgba(255,255,255,.10)}.list{display:grid;gap:10px}.item{padding:16px;background:linear-gradient(180deg,#201628,#17101f);border:1px solid rgba(255,255,255,.06);border-radius:16px}
+.modal{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.72);backdrop-filter:blur(15px);align-items:center;justify-content:center;padding:14px}.modal.show{display:flex}.box{width:min(700px,100%);max-height:92vh;overflow:auto;background:linear-gradient(145deg,#171020,#0c0911);border:1px solid rgba(255,255,255,.14);border-radius:28px;box-shadow:0 35px 100px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.07)}.modalHead{padding:16px;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07)}.modalHead img{width:50px;height:50px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.17)}.close{margin-left:auto;border-radius:50%;width:40px;height:40px;background:rgba(255,255,255,.08);color:#fff}.messages{height:390px;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:10px}.msg{max-width:75%;padding:12px 15px;border-radius:17px;background:#292033;box-shadow:0 10px 25px rgba(0,0,0,.12)}.me{align-self:flex-end;background:linear-gradient(135deg,#dc2b9f,#7436dc)}.notice{text-align:center;padding:12px;border-radius:13px;background:rgba(255,60,172,.11);border:1px solid rgba(255,91,185,.14);color:#ffc3e4}.chatBar{display:flex;gap:8px;padding:12px;background:rgba(255,255,255,.035);border-top:1px solid rgba(255,255,255,.06)}.chatBar button{padding:10px 18px;border-radius:22px;background:linear-gradient(135deg,#ff3cac,#9d49e8);color:#fff}.unlock{display:none;padding:15px;text-align:center;background:rgba(255,255,255,.035)}.unlock.show{display:block}.unlock{border-top:1px solid rgba(255,255,255,.08)}.unlock p{font-size:15px}.unlock .primary{min-width:210px}.callScreen{height:580px;position:relative;overflow:hidden}.callScreen>img{width:100%;height:100%;object-fit:cover;opacity:.76;filter:saturate(1.1)}.callTop{position:absolute;top:0;left:0;right:0;padding:22px;display:flex;justify-content:space-between;background:linear-gradient(#000c,transparent)}.callBottom{position:absolute;bottom:26px;left:0;right:0;text-align:center}.end{background:linear-gradient(145deg,#ff4462,#cc1735);color:#fff;border-radius:50%;width:62px;height:62px;font-size:22px;box-shadow:0 12px 30px rgba(239,37,72,.35)}.profileBig{width:100%;height:330px;object-fit:cover}
+
+.chatTools{display:flex;gap:8px;margin-left:auto;align-items:center}.callMini{padding:9px 12px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);color:#fff;font-weight:800}.callMini.locked:before{content:"🔒 ";font-size:11px}.typing{align-self:flex-start;display:inline-flex;align-items:center;gap:4px;min-width:58px}.typing span{width:7px;height:7px;border-radius:50%;background:#cbbfd2;display:inline-block;animation:typingDot 1s infinite ease-in-out}.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}@keyframes typingDot{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-4px);opacity:1}}
+@media(max-width:980px){.hero{grid-template-columns:1fr;min-height:auto}.heroVisual{min-height:330px}.hero h1{max-width:780px}.hc1{left:8%}.hc2{right:8%}.hc3{left:38%}}
+
+.headerActions{display:flex;align-items:center;gap:10px}.walletTop{display:flex;align-items:center;gap:9px;padding:9px 13px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid var(--line);color:#fff;font-weight:850;white-space:nowrap}.walletTop small{display:block;color:var(--muted);font-size:9px;font-weight:700}.walletTop strong{font-size:13px}.walletTop:hover{background:rgba(255,255,255,.10)}
+@media(max-width:700px){header{padding:9px 10px;gap:7px;align-items:center}.logo{font-size:15px;white-space:nowrap}.logo small{font-size:6px;letter-spacing:2px}nav{gap:2px;padding:4px;overflow:auto;flex-wrap:nowrap}.navBtn{font-size:11px;padding:10px 12px;white-space:nowrap}.topBtn{font-size:11px;padding:10px 12px}.headerActions{gap:5px}.walletTop{padding:8px 9px}.walletTop small{display:none}.walletTop strong{font-size:11px}.page{padding:15px 12px 84px}.hero{padding:26px 20px;border-radius:26px;gap:12px}.hero h1{font-size:42px;letter-spacing:-2px}.hero p{font-size:14px}.heroVisual{min-height:285px}.heroOrb{width:210px;height:210px}.heroCard{width:135px;border-radius:19px;padding:7px}.heroCard img{border-radius:14px}.hc1{left:0;top:5%}.hc2{right:0;top:17%}.hc3{left:31%;bottom:0}.toolbar{grid-template-columns:1fr 1fr;padding:9px;border-radius:18px}.toolbar input{grid-column:1/-1}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.photo{height:215px}.info{padding:10px}.actions{grid-template-columns:1fr}.wallet{display:block}.wallet button{margin-top:12px}.panel{padding:20px;border-radius:22px}.sectionTitle{font-size:23px;margin-top:28px}.callScreen{height:78vh}}
+@media(max-width:390px){.heroVisual{min-height:255px}.heroCard{width:120px}.grid{gap:8px}.photo{height:195px}.info>b{font-size:14px}.muted{font-size:11px}.chat,.call,.detail{font-size:12px;padding:10px}}
+
+/* Wallet access plans */
+.planGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}.planCard{position:relative;text-align:left;padding:18px;border-radius:20px;background:linear-gradient(145deg,#201529,#120d18);border:1px solid rgba(255,255,255,.10);color:#fff;box-shadow:0 16px 35px rgba(0,0,0,.22)}.planCard h3{margin:0 0 7px;font-size:18px}.planPrice{font-size:25px;font-weight:950;margin:8px 0}.planCard p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}.planCard button{width:100%;margin-top:13px}.planHot{border-color:rgba(255,77,166,.6);box-shadow:0 0 0 1px rgba(255,77,166,.14) inset,0 18px 45px rgba(255,40,140,.16)}.hotBadge{position:absolute;right:12px;top:12px;padding:6px 10px;border-radius:999px;background:linear-gradient(135deg,#ff3f9f,#ff7a45);color:#fff;font-size:10px;font-weight:950;letter-spacing:.9px;box-shadow:0 8px 22px rgba(255,63,159,.35);animation:hotPulse 1.3s ease-in-out infinite}@keyframes hotPulse{50%{transform:scale(1.08);box-shadow:0 10px 30px rgba(255,63,159,.55)}}.activePass{margin-top:12px;padding:11px 13px;border-radius:14px;background:rgba(34,199,131,.10);border:1px solid rgba(34,199,131,.25);color:#bff5dd;font-size:12px}@media(max-width:520px){.planGrid{grid-template-columns:1fr}}
+/* PIX side gateway */
+#pixGatewayModal{display:none;position:fixed;inset:0;z-index:9999;align-items:stretch;justify-content:flex-end;padding:0;background:rgba(0,0,0,.64);backdrop-filter:blur(10px)}#pixGatewayModal.show{display:flex!important}
+#pixGatewayModal .pixSheet{width:min(430px,100%);height:100vh;overflow:auto;background:linear-gradient(180deg,#171020,#0c0911);border-left:1px solid rgba(255,255,255,.14);box-shadow:-28px 0 80px rgba(0,0,0,.5);padding:24px;animation:pixSlide .25s ease}
+@keyframes pixSlide{from{transform:translateX(100%)}to{transform:none}}
+.pixBrand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:20px}.pixMark{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#32d8a0;color:#07130f;font-weight:950}
+.pixAmount{margin:24px 0 8px;font-size:34px;font-weight:950}.pixSub{color:var(--muted);line-height:1.55}.pixQr{width:210px;height:210px;margin:22px auto;background:repeating-linear-gradient(45deg,#fff 0 6px,#111 6px 12px),repeating-linear-gradient(-45deg,transparent 0 8px,#fff 8px 14px);border:12px solid #fff;border-radius:14px;box-shadow:0 14px 35px rgba(0,0,0,.28)}
+.pixCode{display:flex;gap:8px}.pixCode input{font-size:12px}.pixStatus{margin-top:16px;padding:12px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:#d9cfdf;font-size:13px}.pixActions{display:grid;gap:10px;margin-top:18px}.pixSecondary{padding:13px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid var(--line);color:#fff;font-weight:800}
+
+.upgradeOverlay{display:none;position:fixed;inset:0;z-index:140;background:rgba(0,0,0,.55);backdrop-filter:blur(8px)}
+.upgradeOverlay.show{display:block}
+.upgradePanel{position:absolute;top:0;right:0;width:min(430px,94vw);height:100%;overflow:auto;background:linear-gradient(180deg,#171020,#0b0810);border-left:1px solid rgba(255,255,255,.12);box-shadow:-30px 0 80px rgba(0,0,0,.55);padding:22px}
+.upgradeHead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.upgradeHead h2{margin:0;font-size:28px}
+.upgradeClose{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.08);color:#fff;font-size:20px}
+.planStack{display:grid;gap:13px}
+.planCard{position:relative;padding:18px;border-radius:20px;background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.035));border:1px solid rgba(255,255,255,.10);box-shadow:0 14px 35px rgba(0,0,0,.18)}
+.planCard h3{margin:0 0 6px;font-size:24px}
+.planCard p{margin:0;color:#cfc6d4;line-height:1.55}
+.planCard button{width:100%;margin-top:14px;padding:13px 16px;border-radius:14px;background:linear-gradient(135deg,#ff3f9f,#8b5cf6);color:#fff;font-weight:900}
+.planCard.hot{border-color:rgba(255,95,177,.52);box-shadow:0 0 0 1px rgba(255,95,177,.12),0 20px 45px rgba(173,61,210,.20)}
+.hotBadge{position:absolute;top:12px;right:12px;padding:7px 10px;border-radius:999px;background:linear-gradient(135deg,#ff5d7d,#ff3f9f);font-size:11px;font-weight:950}
+
+
+/* Premium Upgrade CTA */
+.upgradeCta{
+  position:relative;
+  min-width:150px;
+  padding:14px 25px !important;
+  border-radius:16px !important;
+  background:linear-gradient(135deg,var(--pink),#b747e9 52%,var(--violet)) !important;
+  color:#fff !important;
+  font-size:15px !important;
+  font-weight:950 !important;
+  letter-spacing:.35px;
+  border:1px solid rgba(255,255,255,.22) !important;
+  box-shadow:0 12px 30px rgba(214,57,178,.34),inset 0 1px 0 rgba(255,255,255,.30) !important;
+  overflow:visible;
+  animation:upgradePulse 1.7s ease-in-out infinite;
+}
+.upgradeCta::before{
+  content:"";
+  position:absolute;
+  inset:-5px;
+  border-radius:20px;
+  border:1px solid rgba(255,104,194,.42);
+  opacity:.45;
+  animation:upgradeRing 1.7s ease-out infinite;
+  pointer-events:none;
+}
+.upgradeCta .upgradeHot{
+  position:absolute;
+  top:-10px;
+  right:-9px;
+  padding:4px 7px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#ff6a88,#ff3f9f);
+  color:#fff;
+  font-size:9px;
+  font-weight:950;
+  line-height:1;
+  box-shadow:0 6px 16px rgba(255,63,159,.38);
+}
+.upgradeCta:hover{
+  transform:translateY(-2px) scale(1.035) !important;
+  box-shadow:0 18px 42px rgba(214,57,178,.46),0 0 25px rgba(255,63,159,.18) !important;
+}
+@keyframes upgradePulse{
+  0%,100%{filter:brightness(1);box-shadow:0 12px 30px rgba(214,57,178,.30),inset 0 1px 0 rgba(255,255,255,.30)}
+  50%{filter:brightness(1.16);box-shadow:0 16px 40px rgba(214,57,178,.52),0 0 24px rgba(255,63,159,.28),inset 0 1px 0 rgba(255,255,255,.34)}
+}
+@keyframes upgradeRing{
+  0%{transform:scale(.96);opacity:.50}
+  70%{transform:scale(1.08);opacity:.08}
+  100%{transform:scale(1.08);opacity:0}
+}
+@media(max-width:700px){
+  .upgradeCta{min-width:118px;padding:11px 14px !important;font-size:12px !important;border-radius:14px !important}
+  .upgradeCta .upgradeHot{top:-8px;right:-6px;font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  .upgradeCta,.upgradeCta::before{animation:none !important}
+}
+
+
+/* Mobile header visibility fix */
+@media(max-width:700px){
+  header{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) auto !important;
+    grid-template-areas:
+      "logo upgrade"
+      "nav nav" !important;
+    align-items:center !important;
+    gap:9px 10px !important;
+    padding:10px 10px 11px !important;
+    overflow:visible !important;
+  }
+  header .logo{
+    grid-area:logo !important;
+    min-width:0;
+    font-size:15px !important;
+  }
+  header nav{
+    grid-area:nav !important;
+    width:100% !important;
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:5px !important;
+    padding:5px !important;
+    overflow:visible !important;
+    flex-wrap:unset !important;
+  }
+  header nav .navBtn{
+    width:100% !important;
+    min-width:0 !important;
+    padding:9px 5px !important;
+    font-size:10px !important;
+    text-align:center !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+  header .upgradeCta{
+    grid-area:upgrade !important;
+    position:relative !important;
+    z-index:2 !important;
+    min-width:112px !important;
+    padding:10px 13px !important;
+    font-size:11px !important;
+    margin:0 !important;
+  }
+}
+@media(max-width:390px){
+  header nav .navBtn{
+    font-size:9px !important;
+    padding:8px 3px !important;
+  }
+  header .upgradeCta{
+    min-width:104px !important;
+    padding:9px 10px !important;
+    font-size:10px !important;
+  }
+}
+
+</style>
+
+
+</head>
+<body>
+
+<header>
+<div class="logo">ARINA <span>WEB CALL</span><small>CONHEÇA • CONVERSE • CONECTE-SE</small></div>
+<nav>
+<button class="navBtn active" onclick="page('home',this)">Início</button>
+<button class="navBtn" onclick="page('live',this)">🟢 Online</button>
+<button class="navBtn" onclick="page('profiles',this)">Perfis</button>
+<button class="navBtn" onclick="page('account',this)">Conta</button>
+</nav>
+<div class="headerActions"><button class="topBtn upgradeCta" onclick="openUpgradePanel()"><span class="upgradeHot">HOT</span>⬆ ASSINAR</button></div>
+</header>
+
+<section id="home" class="page active">
+<div class="hero">
+  <div class="heroCopiar">
+    <div class="eyebrow"><i></i> Comunidade online agora</div>
+    <h1>Conheça, converse e <span>conecte-se online</span></h1>
+    <p>Descubra perfis, inicie conversas e faça chamadas privadas em uma experiência moderna, rápida e envolvente.</p>
+    <div class="heroActions"><button class="primary" onclick="page('profiles')">Explorar Perfis</button><button class="ghostBtn" onclick="page('live')">Ver Quem Está Online</button></div>
+    <div class="heroStats"><div class="statPill"><b>Mais de 200 mil</b> perfis</div><div class="statPill"><b>50+</b> países</div><div class="statPill"><b>Online</b> agora</div></div>
+  </div>
+  <div class="heroVisual">
+    <div class="heroOrb"></div>
+    <div class="heroCard hc1"><img src="https://randomuser.me/api/portraits/women/44.jpg"><b>Sofia, 24 ✓</b><small>● Online</small></div>
+    <div class="heroCard hc2"><img src="https://randomuser.me/api/portraits/women/68.jpg"><b>Kiara, 22 ✓</b><small>● Disponível</small></div>
+    <div class="heroCard hc3"><img src="https://randomuser.me/api/portraits/women/32.jpg"><b>Luna, 25 ✓</b><small>📹 Vídeo disponível</small></div>
+  </div>
+</div>
+<h2 class="sectionTitle">Perfis populares</h2>
+<div class="toolbar">
+<input id="search" placeholder="Buscar nome, cidade ou país">
+<select id="country" onchange="render()"><option value="all">🌍 Todos os países</option></select>
+<select id="gender" onchange="render()"><option value="all">Todos os gêneros</option><option value="Female">Feminino</option><option value="Male">Masculino</option><option value="Other">Outro</option></select>
+<button class="primary" onclick="render()">Buscar</button>
+</div>
+<div id="homeGrid" class="grid"></div>
+</section>
+
+<section id="live" class="page"><div class="panel"><h1>Online agora</h1><p class="muted">Perfis disponíveis agora para chat e chamadas privadas.</p></div><h2 class="sectionTitle">Perfis online</h2><div id="liveGrid" class="grid"></div></section>
+<section id="profiles" class="page"><h2>Todos os perfis</h2><div id="profileGrid" class="grid"></div></section>
+
+<section id="account" class="page"><div class="panel">
+<h1>Minha conta</h1>
+<div class="wallet"><div><b>Assinar</b><span class="muted" id="currencyText">Brasil • Real brasileiro (BRL)</span></div><button class="primary" onclick="recharge()">Assinar</button></div>
+<input id="myName" placeholder="Seu nome"><br><br><select id="myCountry" onchange="setCurrency()"></select><br><br>
+<textarea placeholder="Escreva sobre você"></textarea><br><br><button class="primary" onclick="saveAccount()">Salvar perfil</button>
+<h2 class="sectionTitle">❤️ Favoritos</h2><div id="favorites" class="list"></div>
+<h2 class="sectionTitle">💬 Histórico de chats</h2><div id="chatHistory" class="list"></div>
+<h2 class="sectionTitle">📹 Histórico de chamadas</h2><div id="callHistory" class="list"></div>
+<h2 class="sectionTitle">🔔 Notificações</h2><div id="notifications" class="list"></div>
+<h2 class="sectionTitle">Segurança e ajuda</h2><div class="item">Denuncie perfis falsos ou abusivos. Nunca compartilhe senhas, códigos OTP ou dados bancários. Use a opção Bloquear se alguém fizer você se sentir desconfortável.</div>
+</div></section>
+
+<section id="login" class="page"><div class="panel" style="max-width:460px"><h1>Bem-vindo de volta</h1><br><input placeholder="E-mail ou celular"><br><br><input type="password" placeholder="Senha"><br><br><button class="primary" onclick="alert('Login de demonstração realizado com sucesso');page('home')">Entrar</button><p class="muted">Novo por aqui? Cadastre-se abaixo.</p><button class="detail" onclick="page('register')">Criar conta</button></div></section>
+<section id="register" class="page"><div class="panel" style="max-width:460px"><h1>Criar conta</h1><br><input placeholder="Nome completo"><br><br><input placeholder="Country"><br><br><input placeholder="Email"><br><br><input type="password" placeholder="Senha"><br><br><button class="primary" onclick="alert('Conta de demonstração criada com sucesso');page('account')">Cadastrar</button></div></section>
+
+<div id="chatModal" class="modal"><div class="box">
+<div class="modalHead"><img id="chatImg"><div><b id="chatTitle"></b><small class="muted">● Online</small></div><div class="chatTools"><button class="callMini locked" onclick="requestPaidCall('voice')">📞 Chamada de voz</button><button class="callMini locked" onclick="requestPaidCall('video')">📹 Chamada de vídeo</button></div><button class="close" onclick="closeModal('chatModal')">✕</button></div>
+<div id="messages" class="messages"></div>
+<div id="chatBar" class="chatBar"><input id="message" placeholder="Escreva uma mensagem..." onkeydown="if(event.key==='Enter')sendMessage()"><button onclick="sendMessage()">Enviar</button></div>
+<div id="unlock" class="unlock"><p>🔒 Chat bloqueado. Pague <b id="unlockPrice"></b> para continuar.</p><button class="primary" onclick="unlockChat()">Pagar e desbloquear</button></div>
+</div></div>
+
+<div id="homeVideoPayModal" class="modal"><div class="box" style="max-width:420px;text-align:center;padding:26px">
+<button class="close" style="float:right" onclick="closeModal('homeVideoPayModal')">✕</button>
+<div style="font-size:46px;margin-top:18px">🔒</div>
+<h2 style="margin:10px 0 6px">Chamada de vídeo bloqueada</h2>
+<p class="muted" id="homeVideoPayText">Pague R$ 10,00 para iniciar a chamada de vídeo.</p>
+<button class="primary" style="width:100%;margin-top:14px" onclick="unlockHomeVideoCall()">Pagar agora • R$ 10,00 • Chamada de vídeo</button>
+</div></div>
+
+
+<div id="chatCallPayModal" class="modal"><div class="box" style="max-width:420px;text-align:center;padding:26px">
+<button class="close" style="float:right" onclick="closeModal('chatCallPayModal')">✕</button>
+<div style="font-size:48px;margin-top:8px" id="chatCallPayIcon">🔒</div>
+<h2 style="margin:10px 0 6px" id="chatCallPayTitle">Chamada bloqueada</h2>
+<p class="muted" id="chatCallPayText">Pague para desbloquear a chamada.</p>
+<button class="primary" id="chatCallPayButton" style="width:100%;margin-top:14px" onclick="unlockChatPaidCall()">Pagar agora</button>
+</div></div>
+
+
+<div id="plansModal" class="modal"><div class="box" style="max-width:760px;padding:24px">
+<button class="close" style="float:right" onclick="closeModal('plansModal')">✕</button>
+<h2 style="margin:4px 0 5px">Escolha um plano de acesso</h2>
+<p class="muted">Pague com segurança via PIX. O acesso começa somente após a confirmação do pagamento.</p>
+<div id="activePassBox" class="activePass" style="display:none"></div>
+<div class="planGrid">
+  <div class="planCard"><h3>Passe de vídeo por 1 hora</h3><div class="planPrice">R$ 10,00</div><p>Chamadas de vídeo ilimitadas por 1 hora após a confirmação do pagamento.</p><button class="primary" onclick="buyAccessPlan('video1h')">Pagar com PIX</button></div>
+  <div class="planCard"><h3>Passe de vídeo por 3 horas</h3><div class="planPrice">R$ 18,00</div><p>Chamadas de vídeo ilimitadas por 3 horas após a confirmação do pagamento.</p><button class="primary" onclick="buyAccessPlan('video3h')">Pagar com PIX</button></div>
+  <div class="planCard"><h3>Passe de vídeo por 1 dia</h3><div class="planPrice">R$ 28,00</div><p>Chamadas de vídeo ilimitadas por 24 horas após a confirmação do pagamento.</p><button class="primary" onclick="buyAccessPlan('video1d')">Pagar com PIX</button></div>
+  <div class="planCard"><h3>Passe de vídeo por 7 dias</h3><div class="planPrice">R$ 49,00</div><p>Chamadas de vídeo ilimitadas por 7 dias após a confirmação do pagamento.</p><button class="primary" onclick="buyAccessPlan('video7d')">Pagar com PIX</button></div>
+  <div class="planCard planHot" style="grid-column:1/-1"><span class="hotBadge">🔥 HOT</span><h3>Acesso completo por 1 mês</h3><div class="planPrice">R$ 101,00</div><p>Acesso completo por 30 dias: chamadas de vídeo, chamadas de voz, chat e acesso à área online incluídos.</p><button class="primary" onclick="buyAccessPlan('full30d')">Obter acesso completo • R$ 101,00</button></div>
+</div></div></div>
+
+<div id="pixGatewayModal" class="modal"><div class="pixSheet">
+<button class="close" style="float:right" onclick="closePixGateway()">✕</button>
+<div class="pixBrand"><div class="pixMark">PIX</div><div>Pagamento via PIX</div></div>
+
+<p class="pixSub" id="pixDescription">Escaneie o QR Code ou copie o código PIX para pagar.</p>
+<div class="pixQr" aria-label="Demo PIX QR Code"></div>
+<div class="pixCode"><input id="pixCopiarCode" readonly value="00020126580014BR.GOV.BCB.PIX0136DEMO-ARINA-WEB-CALL"><button class="primary" onclick="copyPixCode()">Copiar</button></div>
+<div class="pixStatus" id="pixStatus">Aguardando pagamento via PIX...</div>
+<div class="pixActions"><button class="primary" onclick="confirmPixPaymentDemo()">✓ Confirmar pagamento (Demo)</button><button class="pixSecondary" onclick="closePixGateway()">Cancelar</button></div>
+<p class="muted" style="margin-top:14px;font-size:11px">Apenas demonstração visual. Para pagamentos PIX reais, conecte um provedor de pagamento e verifique o status no seu servidor.</p>
+</div></div>
+
+<div id="callModal" class="modal"><div class="box callScreen"><img id="callImg"><div class="callTop"><b id="callTitle"></b><b id="timer">00:00</b></div><div class="callBottom"><button class="end" onclick="closeCall()">☎</button></div></div></div>
+
+<div id="profileModal" class="modal"><div class="box"><button class="close" style="float:right;margin:10px" onclick="closeModal('profileModal')">✕</button><img id="detailImg" class="profileBig"><div style="padding:20px"><h1 id="detailTitle"></h1><p id="detailText" class="muted"></p><br><button class="primary" id="detailChat">💬 Chat</button><button class="detail" id="reportBtn">Denunciar / Bloquear</button></div></div></div>
+
+
+<div id="upgradeOverlay" class="upgradeOverlay" onclick="if(event.target===this)closeUpgradePanel()">
+  <aside class="upgradePanel">
+    <div class="upgradeHead">
+      <div><small class="muted">Planos premium</small><h2>Assinar plano</h2></div>
+      <button class="upgradeClose" onclick="closeUpgradePanel()">✕</button>
+    </div>
+    <div class="planStack">
+      <div class="planCard"><h3>R$ 10,00</h3><p>1 hora de chamadas de vídeo ilimitadas</p><button onclick="selectUpgradePlan(10,'1 hora de chamadas de vídeo ilimitadas','video_1h')">Escolher plano</button></div>
+      <div class="planCard"><h3>R$ 18,00</h3><p>3 horas de chamadas de vídeo ilimitadas</p><button onclick="selectUpgradePlan(18,'3 horas de chamadas de vídeo ilimitadas','video_3h')">Escolher plano</button></div>
+      <div class="planCard"><h3>R$ 28,00</h3><p>1 dia de chamadas de vídeo ilimitadas</p><button onclick="selectUpgradePlan(28,'1 dia de chamadas de vídeo ilimitadas','video_1d')">Escolher plano</button></div>
+      <div class="planCard"><h3>R$ 49,00</h3><p>7 dias de chamadas de vídeo ilimitadas</p><button onclick="selectUpgradePlan(49,'7 dias de chamadas de vídeo ilimitadas','video_7d')">Escolher plano</button></div>
+      <div class="planCard hot"><span class="hotBadge">🔥 HOT</span><h3>R$ 101,00</h3><p><b>Acesso completo por 1 mês</b><br>Chamadas de vídeo + chamadas de voz + chat + acesso online</p><button onclick="selectUpgradePlan(101,'Acesso completo por 1 mês','full_1m')">Obter acesso completo</button></div>
+    </div>
+  </aside>
+</div>
+
+<script>
+
+function openUpgradePanel(){document.getElementById("upgradeOverlay").classList.add("show")}
+function closeUpgradePanel(){document.getElementById("upgradeOverlay").classList.remove("show")}
+function selectUpgradePlan(amount,label,planKey){
+  closeUpgradePanel();
+  const planMap={
+    video_1h:"video1h",
+    video_3h:"video3h",
+    video_1d:"video1d",
+    video_7d:"video7d",
+    full_1m:"full30d"
+  };
+  const realPlanId=planMap[planKey];
+  const plan=realPlanId && ACCESS_PLANS[realPlanId];
+  if(plan){
+    if(!profiles.length)return alert("Nenhum perfil disponível.");openPixGateway("plan",profiles[0].id,plan.price,plan.label,{planId:realPlanId});
+    return;
+  }
+  if(!profiles.length)return alert("Nenhum perfil disponível.");openPixGateway("plan",profiles[0].id,Number(amount),label,{planId:realPlanId||planKey});
+}
+
+let profiles=[];
+let countries=[];
+
+async function loadProfilesFromApi(){
+  try{
+    const response=await fetch("/api/profiles",{credentials:"same-origin"});
+    const data=await response.json().catch(()=>({ok:false,error:"Resposta inválida da API"}));
+
+    if(!response.ok || !data.ok){
+      throw new Error(data.error || "Não foi possível carregar os perfis");
+    }
+
+    profiles=(data.profiles||[]).map(p=>({
+      id:String(p.id),
+      name:String(p.name||""),
+      age:Number(p.age||0),
+      gender:String(p.gender||"Female"),
+      country:String(p.country||""),
+      city:String(p.city||""),
+      img:String(p.img_url||""),
+      status:["online","busy","offline"].includes(p.status)?p.status:"online",
+      busyFor:""
+    }));
+
+    fillCountryFilters();
+    render();
+  }catch(error){
+    console.error("Profiles API error:",error);
+    homeGrid.innerHTML='<div class="item">Não foi possível carregar os perfis.</div>';
+    profileGrid.innerHTML='<div class="item">Não foi possível carregar os perfis.</div>';
+    liveGrid.innerHTML='';
+  }
+}
+
+function fillCountryFilters(){
+  countries=[...new Set(
+    profiles
+      .map(p=>p.country.trim())
+      .filter(Boolean)
+  )].sort((a,b)=>a.localeCompare(b,"pt-BR"));
+
+  country.innerHTML='<option value="all">🌍 Todos os países</option>';
+  countries.forEach(c=>country.add(new Option(c,c)));
+
+  const currentMyCountry=myCountry.value || "Brazil";
+  myCountry.innerHTML="";
+  countries.forEach(c=>myCountry.add(new Option(c,c)));
+
+  if(!countries.includes("Brazil")){
+    myCountry.add(new Option("Brazil","Brazil"));
+  }
+
+  myCountry.value=countries.includes(currentMyCountry)?currentMyCountry:"Brazil";
+}
+const rates={Brazil:{symbol:"R$ ",wallet:0,unlock:10}};
+let wallet=0,currentRate=rates.Brazil,currentProfile=null,locked=false,liked=[],chatLog=[],callLog=[],notes=["Bem-vindo ao Arina Web Call"];
+let contactedProfiles=new Set(),globalChatLocked=false;
+const CHAT_UNLOCK_PRICE=10,VOICE_CALL_PRICE=13,VIDEO_CALL_PRICE=16,HOME_VIDEO_CALL_PRICE=10,chatThreads={},messageCounts={},chatLocks={};
+const ACCESS_PLANS={video1h:{price:10,label:"Passe de vídeo por 1 hora",ms:60*60*1000,scope:"video"},video3h:{price:18,label:"Passe de vídeo por 3 horas",ms:3*60*60*1000,scope:"video"},video1d:{price:28,label:"Passe de vídeo por 1 dia",ms:24*60*60*1000,scope:"video"},video7d:{price:49,label:"Passe de vídeo por 7 dias",ms:7*24*60*60*1000,scope:"video"},full30d:{price:101,label:"Acesso completo por 1 mês",ms:30*24*60*60*1000,scope:"full"}};
+let videoPassUntil=0,fullAccessUntil=0;
+function hasVideoPass(){return Date.now()<videoPassUntil||Date.now()<fullAccessUntil}
+function hasFullAccess(){return Date.now()<fullAccessUntil}
+function extendUntil(current,ms){return Math.max(Date.now(),current)+ms}
+function formatAccessTime(ts){if(!ts||ts<=Date.now())return "";return new Date(ts).toLocaleString("pt-BR",{dateStyle:"medium",timeStyle:"short"})}
+function refreshActivePassBox(){const b=document.getElementById("activePassBox");if(!b)return;if(hasFullAccess()){b.style.display="block";b.textContent=`✅ Acesso completo ativo até ${formatAccessTime(fullAccessUntil)}`;}else if(hasVideoPass()){b.style.display="block";b.textContent=`✅ Passe de vídeo ativo até ${formatAccessTime(videoPassUntil)}`;}else b.style.display="none";}
+function openPlans(){refreshActivePassBox();document.getElementById("plansModal").classList.add("show")}
+function buyAccessPlan(planId){const plan=ACCESS_PLANS[planId];if(!plan)return;document.getElementById("plansModal").classList.remove("show");if(!profiles.length)return alert("Nenhum perfil disponível.");openPixGateway("plan",profiles[0].id,plan.price,plan.label,{planId})}
+const country=document.getElementById("country"),myCountry=document.getElementById("myCountry");
+
+function money(n){return currentRate.symbol+Number(n).toFixed(2).replace(".",",")}
+function card(p,live=false){const busy=p.status==="busy",off=p.status==="offline",label=busy?"🟠 Ocupada":off?"⚫ Offline":"● Online";return `<div class="card"><div class="photo"><img loading="lazy" src="${p.img}" onerror="this.src='https://via.placeholder.com/600x700?text=Perfil'"><span class="badge ${busy?'busy':off?'offline':''}">${label}</span><button class="heart" onclick="like('${p.id}')">♡</button></div><div class="info"><b>${p.name}, ${p.age} ✓</b><div class="muted">📍 ${p.city}, ${p.country}<br>👤 ${p.gender==="Female"?"Feminino":p.gender==="Male"?"Masculino":"Outro"}</div><div class="actions"><button class="chat" onclick="openChat('${p.id}')">💬 Chat</button><button class="call" onclick="${busy?`busyAlert('${p.name}')`:off?`offlineAlert('${p.name}')`:`requestHomeVideoCall('${p.id}')`}" style="${busy||off?'opacity:.55':''}">📹 Chamada de vídeo</button></div><button class="detail" onclick="details('${p.id}')">👤 Ver perfil</button></div></div>`}
+function render(){
+  const s=search.value.toLowerCase().trim();
+  const c=country.value;
+  const g=gender.value;
+
+  const filtered=profiles.filter(p=>
+    (c==="all" || p.country===c) &&
+    (g==="all" || p.gender===g) &&
+    (`${p.name} ${p.city} ${p.country}`.toLowerCase().includes(s))
+  );
+
+  homeGrid.innerHTML=filtered.map(card).join("") || "Nenhum perfil encontrado";
+  profileGrid.innerHTML=filtered.map(card).join("") || "Nenhum perfil encontrado";
+
+  const liveProfiles=filtered.filter(p=>p.status==="online");
+  liveGrid.innerHTML=liveProfiles.map(p=>card(p,true)).join("") || "Nenhum perfil online encontrado";
+}
+function busyAlert(n){alert(`${n} está ocupada agora. Tente novamente em instantes.`)}
+function offlineAlert(n){alert(`${n} está offline no momento. Tente novamente mais tarde.`)}
+
+search.addEventListener("input",render);
+loadProfilesFromApi();
+
+function page(id,b){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".navBtn").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");renderAccount();scrollTo(0,0)}
+function find(id){return profiles.find(p=>p.id===id)}
+function getThread(id){if(!chatThreads[id])chatThreads[id]=[{who:"them",text:`Oi 👋 Eu sou ${find(id).name}. Que bom ver você por aqui 😊`}];return chatThreads[id]}
+function isCurrentChatLocked(){if(hasFullAccess())return false;return globalChatLocked || !!chatLocks[currentProfile?.id]}
+function paintThread(){const th=getThread(currentProfile.id);messages.innerHTML=th.map(m=>`<div class="msg ${m.who==='me'?'me':''}">${escape(m.text)}</div>`).join("");if(!hasFullAccess()){if(globalChatLocked)messages.innerHTML+=`<div class="notice">🔒 Você já iniciou conversas com 2 perfis. Todos os chats estão bloqueados. Desbloqueie por <b>R$ 10,00</b>.</div>`;else if(chatLocks[currentProfile.id])messages.innerHTML+=`<div class="notice">🔒 Você enviou 2 mensagens para este perfil. Pague <b>R$ 10,00</b> para continuar conversando.</div>`}messages.scrollTop=99999}
+function applyLockUI(){locked=isCurrentChatLocked();if(locked){chatBar.style.display="none";message.disabled=true;unlockPrice.textContent="R$ 10,00";unlock.classList.add("show")}else{chatBar.style.display="flex";message.disabled=false;unlock.classList.remove("show")}}
+function openChat(id){currentProfile=find(id);chatTitle.textContent=`${currentProfile.name}, ${currentProfile.age}`;chatImg.src=currentProfile.img;if(!hasFullAccess()&&!contactedProfiles.has(id)&&contactedProfiles.size>=2)globalChatLocked=true;paintThread();applyLockUI();chatModal.classList.add("show")}
+function smartReply(text,p){const t=text.toLowerCase();const pools={hello:[`Oi 😊 Como foi seu dia?`,`Olá 😘 Que bom receber sua mensagem!`,`Oi! Estou online agora 💕`],how:[`Estou bem 😊 E você, como está?`,`Estou ótima 💖 E você?`],where:[`Sou de ${p.city}, ${p.country}. E você, de onde é?`,`Estou em ${p.city} 📍 E você?`],age:[`Tenho ${p.age} anos 😊`,`Tenho ${p.age} anos 💕 E você?`],call:[`Podemos conversar mais um pouco por aqui primeiro 😊`,`Claro 😊 você pode usar os botões de chamada acima.`],default:[`Entendi 😊 Me conte mais sobre você.`,`Que legal 💕 O que você gosta de fazer no seu tempo livre?`,`Estou gostando de conversar com você 😘`,`Sim 😊 Estou aqui com você agora.`]};let arr=pools.default;if(/olá|ola|oi|e aí|e ai|hello|hi|hey/.test(t))arr=pools.hello;else if(/como você está|como voce esta|tudo bem|how are/.test(t))arr=pools.how;else if(/onde|cidade|mora|localização|localizacao|where|city|location/.test(t))arr=pools.where;else if(/idade|anos|age|years old/.test(t))arr=pools.age;else if(/ligação|ligacao|chamada|vídeo|video|voz|call|voice/.test(t))arr=pools.call;const seed=String(p.id).split("").reduce((sum,ch)=>sum+ch.charCodeAt(0),0);return arr[(seed+text.length+getThread(p.id).length)%arr.length]}
+function showTyping(){const el=document.createElement("div");el.id="typingIndicator";el.className="msg typing";el.innerHTML='<b style="font-size:11px;margin-right:7px">Digitando</b><span></span><span></span><span></span>';messages.appendChild(el);messages.scrollTop=99999}
+function hideTyping(){document.getElementById("typingIndicator")?.remove()}
+function sendMessage(){if(isCurrentChatLocked())return;let t=message.value.trim();if(!t)return;if(!hasFullAccess()&&!contactedProfiles.has(currentProfile.id)){contactedProfiles.add(currentProfile.id);if(contactedProfiles.size>2){globalChatLocked=true;paintThread();applyLockUI();return}}const pid=currentProfile.id,p=currentProfile,th=getThread(pid);th.push({who:"me",text:t});messageCounts[pid]=(messageCounts[pid]||0)+1;message.value="";paintThread();showTyping();message.disabled=true;setTimeout(()=>{hideTyping();th.push({who:"them",text:smartReply(t,p)});chatLog.unshift(`${p.name}: ${t}`);notes.unshift(`${p.name} respondeu em 2 segundos`);if(!hasFullAccess()&&messageCounts[pid]>=2)chatLocks[pid]=true;paintThread();applyLockUI();renderAccount()},2000)}
+function unlockChat(){if(!currentProfile)return;const id=currentProfile.id;const label=globalChatLocked?"Desbloquear todos os chats":`Desbloquear chat com ${currentProfile.name}`;openPixGateway('chat',id,CHAT_UNLOCK_PRICE,label)}
+let homeVideoTarget=null;
+const paidHomeVideoProfiles=new Set();
+const paidVoiceProfiles=new Set();
+const paidVideoProfiles=new Set();
+const paidChatProfiles=new Set();
+let paidGlobalChatUnlock=false;
+function requestHomeVideoCall(id){homeVideoTarget=find(id);if(!homeVideoTarget)return;if(hasVideoPass()||paidHomeVideoProfiles.has(id)){startCall(id,'home');return}homeVideoPayText.textContent=`A chamada de vídeo com ${homeVideoTarget.name} está bloqueada. Pague R$ 10,00 para desbloquear.`;homeVideoPayModal.classList.add("show")}
+function unlockHomeVideoCall(){if(!homeVideoTarget)return;homeVideoPayModal.classList.remove('show');openPixGateway('homeVideo',homeVideoTarget.id,HOME_VIDEO_CALL_PRICE,`Chamada de vídeo com ${homeVideoTarget.name}`)}
+
+let pendingChatCallType=null;
+function requestPaidCall(type){if(!currentProfile)return;const alreadyPaid=type==='voice'?(hasFullAccess()||paidVoiceProfiles.has(currentProfile.id)):(hasVideoPass()||paidVideoProfiles.has(currentProfile.id));if(alreadyPaid){if(type==='voice')startVoiceCall(currentProfile.id);else startCall(currentProfile.id,'chat');return}pendingChatCallType=type;const isVoice=type==='voice',price=isVoice?VOICE_CALL_PRICE:VIDEO_CALL_PRICE,priceText=money(price);chatCallPayIcon.textContent=isVoice?'📞':'📹';chatCallPayTitle.textContent=isVoice?'Chamada de voz bloqueada':'Chamada de vídeo bloqueada';chatCallPayText.textContent=`${currentProfile.name}: pague ${priceText} para desbloquear e iniciar a ${isVoice?'chamada de voz':'chamada de vídeo'}.`;chatCallPayButton.textContent=`Pagar agora • ${priceText} • ${isVoice?'Chamada de voz':'Chamada de vídeo'}`;chatCallPayModal.classList.add('show')}
+function unlockChatPaidCall(){if(!currentProfile||!pendingChatCallType)return;const isVoice=pendingChatCallType==='voice',price=isVoice?VOICE_CALL_PRICE:VIDEO_CALL_PRICE;const id=currentProfile.id;const type=pendingChatCallType;chatCallPayModal.classList.remove('show');openPixGateway(type==='voice'?'voice':'chatVideo',id,price,`${isVoice?'Chamada de voz':'Chamada de vídeo'} com ${currentProfile.name}`)}
+
+
+// REAL LG PAY FLOW
+// No pending/recharge record is created in this frontend.
+// Backend calls LG Pay and returns only the payment URL.
+// Payment confirmation/access should be handled later by your verified backend callback.
+
+async function openPixGateway(kind,id,amount,description,meta={}){
+  const payWindow=window.open("about:blank","_blank");
+
+  if(!payWindow){
+    alert("Permita pop-ups para abrir o pagamento.");
+    return;
+  }
+
+  try{
+    payWindow.document.write(
+      '<!doctype html><html><body style="margin:0;background:#0b0810;color:#fff;font-family:Arial;display:grid;place-items:center;height:100vh"><div>Carregando pagamento...</div></body></html>'
+    );
+
+    let phone="";
+    try{
+      const session=JSON.parse(localStorage.getItem("arinaLoginSession")||"null");
+      phone=session?.phone||"";
+    }catch(e){}
+
+    const response=await fetch("/api/payments/create",{
+      method:"POST",
+      credentials:"same-origin",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        kind,
+        profileId:id,
+        amount:Number(amount),
+        description:String(description||"Pagamento Arina"),
+        planId:meta.planId||"",
+        phone
+      })
+    });
+
+    const data=await response.json().catch(()=>({
+      ok:false,
+      error:"Resposta inválida do gateway"
+    }));
+
+    if(!response.ok || !data.ok || !data.payUrl){
+      throw new Error(data.error||"Não foi possível criar o pagamento");
+    }
+
+    payWindow.location.href=data.payUrl;
+
+  }catch(error){
+    try{payWindow.close()}catch(e){}
+    alert(error.message||"Erro ao abrir pagamento");
+  }
+}
+
+// Kept only so old HTML modal buttons do not throw if clicked accidentally.
+function closePixGateway(){
+  const modal=document.getElementById("pixGatewayModal");
+  if(modal){
+    modal.classList.remove("show");
+    modal.style.display="none";
+  }
+  document.body.style.overflow="";
+}
+function copyPixCode(){}
+function confirmPixPaymentDemo(){}
+function startVoiceCall(id){if(!hasFullAccess()&&!paidVoiceProfiles.has(id)){const p=find(id);if(p){currentProfile=p;requestPaidCall('voice')}return}let p=find(id);if(!p)return;callImg.src=p.img;callTitle.textContent=`📞 ${p.name}, ${p.age} • Chamada de voz`;callModal.classList.add("show");sec=0;clearInterval(interval);interval=setInterval(()=>{sec++;timer.textContent=String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")},1000);callLog.unshift(`${p.name} — chamada de voz iniciada`)}
+function recharge(){openPlans()}
+function setCurrency(){currentRate=rates.Brazil;myCountry.value="Brazil";render();renderAccount()}
+function like(id){let p=find(id);if(!liked.includes(p.name)){liked.push(p.name);notes.unshift(`${p.name} adicionado aos favoritos`)}renderAccount()}
+function details(id){let p=find(id);detailImg.src=p.img;detailTitle.textContent=`${p.name}, ${p.age}`;detailText.textContent=`${p.city}, ${p.country} • ${p.gender==="Female"?"Feminino":p.gender==="Male"?"Masculino":"Outro"} • ${p.status==='online'?'Online agora':p.status==='busy'?'Ocupada agora':'Offline'}`;detailChat.onclick=()=>{closeModal("profileModal");openChat(id)};reportBtn.onclick=()=>{alert(`${p.name} foi denunciado/bloqueado nesta demonstração.`);notes.unshift(`${p.name} foi denunciado/bloqueado`);closeModal("profileModal")};profileModal.classList.add("show")}
+let sec=0,interval;
+function startCall(id,accessType){const p=find(id);if(!p)return;const homeAllowed=accessType==='home'&&(hasVideoPass()||paidHomeVideoProfiles.has(id));const chatAllowed=accessType==='chat'&&(hasVideoPass()||paidVideoProfiles.has(id));if(!homeAllowed&&!chatAllowed){if(accessType==='chat'){currentProfile=p;requestPaidCall('video')}else{requestHomeVideoCall(id)}return}callImg.src=p.img;callTitle.textContent=`📹 ${p.name}, ${p.age} • Chamada de vídeo`;callModal.classList.add("show");sec=0;clearInterval(interval);interval=setInterval(()=>{sec++;timer.textContent=String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")},1000);callLog.unshift(`${p.name} — chamada de vídeo iniciada`);notes.unshift(`Chamada de vídeo iniciada com ${p.name}`)}
+function closeCall(){clearInterval(interval);callModal.classList.remove("show");renderAccount()}
+function closeModal(id){document.getElementById(id).classList.remove("show")}
+function saveAccount(){alert("Perfil de demonstração salvo")}
+function renderAccount(){balance.textContent=money(wallet);if(document.getElementById("headerBalance"))headerBalance.textContent=money(wallet);currencyText.textContent=hasFullAccess()?`Acesso completo até ${formatAccessTime(fullAccessUntil)}`:hasVideoPass()?`Passe de vídeo até ${formatAccessTime(videoPassUntil)}`:"Escolha um plano para liberar o acesso";favorites.innerHTML=liked.length?liked.map(x=>`<div class="item">❤️ ${x}</div>`).join(""):"<div class='item'>Nenhum favorito ainda.</div>";chatHistory.innerHTML=chatLog.length?chatLog.map(x=>`<div class="item">${x}</div>`).join(""):"<div class='item'>Nenhum histórico de chat.</div>";callHistory.innerHTML=callLog.length?callLog.map(x=>`<div class="item">${x}</div>`).join(""):"<div class='item'>Nenhum histórico de chamadas.</div>";notifications.innerHTML=notes.map(x=>`<div class="item">🔔 ${x}</div>`).join("")}
+function escape(t){return t.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+renderAccount();
+</script>
+</body>
+</html>
