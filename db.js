@@ -12,14 +12,14 @@ const mysql = require('mysql2/promise');
 //   charset: 'utf8mb4'
 // });
 
-
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'arian_app',
+  host: 'localhost',
+  user: 'arina',
+  password: 'Arina@12345Strong',
+  database: 'arian_app',
   waitForConnections: true,
   connectionLimit: 10
 });
+
 
 module.exports = pool;
