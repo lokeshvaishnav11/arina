@@ -4,50 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Arina Web Call</title>
-<script>
-(function(){
-
-  try{
-
-    const session = JSON.parse(
-      localStorage.getItem(
-        'arinaLoginSession'
-      ) || 'null'
-    );
-
-
-    const valid =
-      session &&
-      session.loggedIn === true &&
-      Number(session.expiresAt) > Date.now();
-
-
-    if(!valid){
-
-      localStorage.removeItem(
-        'arinaLoginSession'
-      );
-
-      location.replace(
-        'login.html'
-      );
-
-    }
-
-  }catch(e){
-
-    localStorage.removeItem(
-      'arinaLoginSession'
-    );
-
-    location.replace(
-      'login.html'
-    );
-
-  }
-
-})();
-</script>
 <style>
 :root{
   --bg:#07050b;--panel:#100b18;--panel2:#171021;--text:#fff;--muted:#b8aec2;
@@ -392,66 +348,39 @@ function selectUpgradePlan(amount,label,planKey){
   const realPlanId=planMap[planKey];
   const plan=realPlanId && ACCESS_PLANS[realPlanId];
   if(plan){
-    if(!profiles.length)return alert("Nenhum perfil disponível.");openPixGateway("plan",profiles[0].id,plan.price,plan.label,{planId:realPlanId});
+    openPixGateway("plan",profiles[0].id,plan.price,plan.label,{planId:realPlanId});
     return;
   }
-  if(!profiles.length)return alert("Nenhum perfil disponível.");openPixGateway("plan",profiles[0].id,Number(amount),label,{planId:realPlanId||planKey});
+  openPixGateway("plan",profiles[0].id,Number(amount),label,{planId:realPlanId||planKey});
 }
 
-let profiles=[];
-let countries=[];
-
-async function loadProfilesFromApi(){
-  try{
-    const response=await fetch("/api/profiles",{credentials:"same-origin"});
-    const data=await response.json().catch(()=>({ok:false,error:"Resposta inválida da API"}));
-
-    if(!response.ok || !data.ok){
-      throw new Error(data.error || "Não foi possível carregar os perfis");
-    }
-
-    profiles=(data.profiles||[]).map(p=>({
-      id:String(p.id),
-      name:String(p.name||""),
-      age:Number(p.age||0),
-      gender:String(p.gender||"Female"),
-      country:String(p.country||""),
-      city:String(p.city||""),
-      img:String(p.img_url||""),
-      status:["online","busy","offline"].includes(p.status)?p.status:"online",
-      busyFor:""
-    }));
-
-    fillCountryFilters();
-    render();
-  }catch(error){
-    console.error("Profiles API error:",error);
-    homeGrid.innerHTML='<div class="item">Não foi possível carregar os perfis.</div>';
-    profileGrid.innerHTML='<div class="item">Não foi possível carregar os perfis.</div>';
-    liveGrid.innerHTML='';
+const indianFemaleNames=["Aaradhya","Ananya","Aisha","Priya","Riya","Kiara","Kavya","Isha","Nisha","Pooja","Sneha","Meera","Diya","Sanya","Tanvi","Aditi","Ira","Avni","Myra","Radhika","Shreya","Neha","Simran","Muskan","Sakshi","Palak","Ishita","Nandini","Vaishnavi","Anjali"];
+const globalFemaleNames=["Sofia","Emma","Olivia","Ava","Mia","Camila","Yuki","Luna","Isabella","Amelia","Valentina","Nora","Maya","Zara","Elena","Sara","Ana","Julia","Maria","Chloe","Grace","Hana","Lina","Nadia","Leila","Mei","Sakura","Nina","Alina","Carla","Lucia","Eva","Noemi","Iris","Tara","Mila","Layla","Ariana","Bella","Victoria"];
+const otherNames=["Noah","Liam","Ethan","Alex","Jordan","Sam","Taylor","Robin","Avery","Kai","Morgan","Casey","Riley","Jamie","Drew","Cameron","Skyler","Quinn","Parker","Reese"];
+const indiaCities=["Delhi","Mumbai","Bengaluru","Jaipur","Kolkata","Hyderabad","Pune","Chennai","Ahmedabad","Lucknow","Surat","Indore","Goa","Chandigarh","Kochi","Udaipur","Bhopal","Nagpur","Patna","Guwahati"];
+const countryData=[["USA","New York"],["Canada","Toronto"],["Brazil","São Paulo"],["Mexico","Mexico City"],["Argentina","Buenos Aires"],["UK","London"],["France","Paris"],["Germany","Berlin"],["Spain","Madrid"],["Italy","Rome"],["Portugal","Lisbon"],["Netherlands","Amsterdam"],["Sweden","Stockholm"],["Norway","Oslo"],["Poland","Warsaw"],["Turkey","Istanbul"],["Japan","Tokyo"],["South Korea","Seoul"],["Thailand","Bangkok"],["Indonesia","Jakarta"],["Philippines","Manila"],["Singapore","Singapore"],["Malaysia","Kuala Lumpur"],["UAE","Dubai"],["Saudi Arabia","Riyadh"],["South Africa","Cape Town"],["Nigeria","Lagos"],["Kenya","Nairobi"],["Egypt","Cairo"],["Australia","Sydney"],["New Zealand","Auckland"],["Chile","Santiago"],["Colombia","Bogotá"],["Peru","Lima"],["Uruguay","Montevideo"],["Ireland","Dublin"],["Belgium","Brussels"],["Switzerland","Zurich"],["Austria","Vienna"],["Greece","Athens"],["Romania","Bucharest"],["Czech Republic","Prague"],["Hungary","Budapest"],["Ukraine","Kyiv"],["Vietnam","Hanoi"],["China","Shanghai"],["Taiwan","Taipei"],["Hong Kong","Hong Kong"],["Morocco","Casablanca"]];
+const profiles=Array.from({length:400},(_,i)=>{
+  let gender,country,city,name;
+  if(i<120){
+    gender="Female"; country="India"; city=indiaCities[i%indiaCities.length];
+    name=indianFemaleNames[i%indianFemaleNames.length]+" "+(i+1);
+  }else if(i<380){
+    gender="Female"; [country,city]=countryData[(i-120)%countryData.length];
+    name=globalFemaleNames[(i-120)%globalFemaleNames.length]+" "+(i+1);
+  }else{
+    const oi=i-380; gender=oi<10?"Male":"Other"; [country,city]=countryData[oi%countryData.length];
+    name=otherNames[oi%otherNames.length]+" "+(i+1);
   }
-}
-
-function fillCountryFilters(){
-  countries=[...new Set(
-    profiles
-      .map(p=>p.country.trim())
-      .filter(Boolean)
-  )].sort((a,b)=>a.localeCompare(b,"pt-BR"));
-
-  country.innerHTML='<option value="all">🌍 Todos os países</option>';
-  countries.forEach(c=>country.add(new Option(c,c)));
-
-  const currentMyCountry=myCountry.value || "Brazil";
-  myCountry.innerHTML="";
-  countries.forEach(c=>myCountry.add(new Option(c,c)));
-
-  if(!countries.includes("Brazil")){
-    myCountry.add(new Option("Brazil","Brazil"));
-  }
-
-  myCountry.value=countries.includes(currentMyCountry)?currentMyCountry:"Brazil";
-}
+  const status="online";
+  const busy=["2 min","5 min","8 min","12 min","18 min","25 min","32 min","40 min","1 hr","1 hr 15 min","1 hr 30 min","2 hr"];
+  const img=gender==="Female"
+    ?`https://randomuser.me/api/portraits/women/${(i%99)+1}.jpg`
+    :gender==="Male"
+      ?`https://randomuser.me/api/portraits/men/${(i%99)+1}.jpg`
+      :"https://randomuser.me/api/portraits/lego/1.jpg";
+  return {id:"p"+(i+1),name,age:18+(i%18),gender,country,city,img,status,busyFor:""};
+});
+const countries=[...new Set(countryData.map(x=>x[0]))];
 const rates={Brazil:{symbol:"R$ ",wallet:0,unlock:10}};
 let wallet=0,currentRate=rates.Brazil,currentProfile=null,locked=false,liked=[],chatLog=[],callLog=[],notes=["Bem-vindo ao Arina Web Call"];
 let contactedProfiles=new Set(),globalChatLocked=false;
@@ -480,8 +409,9 @@ function extendUntil(current,ms){return Math.max(Date.now(),current)+ms}
 function formatAccessTime(ts){if(!ts||ts<=Date.now())return "";return new Date(ts).toLocaleString("pt-BR",{dateStyle:"medium",timeStyle:"short"})}
 function refreshActivePassBox(){const b=document.getElementById("activePassBox");if(!b)return;if(hasFullAccess()){b.style.display="block";b.textContent=`✅ Acesso completo ativo até ${formatAccessTime(fullAccessUntil)}`;}else if(hasVideoPass()){b.style.display="block";b.textContent=`✅ Passe de vídeo ativo até ${formatAccessTime(videoPassUntil)}`;}else b.style.display="none";}
 function openPlans(){refreshActivePassBox();document.getElementById("plansModal").classList.add("show")}
-function buyAccessPlan(planId){const plan=ACCESS_PLANS[planId];if(!plan)return;document.getElementById("plansModal").classList.remove("show");if(!profiles.length)return alert("Nenhum perfil disponível.");openPixGateway("plan",profiles[0].id,plan.price,plan.label,{planId})}
+function buyAccessPlan(planId){const plan=ACCESS_PLANS[planId];if(!plan)return;document.getElementById("plansModal").classList.remove("show");openPixGateway("plan",profiles[0].id,plan.price,plan.label,{planId})}
 const country=document.getElementById("country"),myCountry=document.getElementById("myCountry");
+countries.forEach(c=>{country.add(new Option(c,c));myCountry.add(new Option(c,c))});myCountry.value="Brazil";
 
 function money(n){return currentRate.symbol+Number(n).toFixed(2).replace(".",",")}
 function card(p,live=false){const busy=p.status==="busy",off=p.status==="offline",label=busy?"🟠 Ocupada":off?"⚫ Offline":"● Online";return `<div class="card"><div class="photo"><img loading="lazy" src="${p.img}" onerror="this.src='https://via.placeholder.com/600x700?text=Perfil'"><span class="badge ${busy?'busy':off?'offline':''}">${label}</span><button class="heart" onclick="like('${p.id}')">♡</button></div><div class="info"><b>${p.name}, ${p.age} ✓</b><div class="muted">📍 ${p.city}, ${p.country}<br>👤 ${p.gender==="Female"?"Feminino":p.gender==="Male"?"Masculino":"Outro"}</div><div class="actions"><button class="chat" onclick="openChat('${p.id}')">💬 Chat</button><button class="call" onclick="${busy?`busyAlert('${p.name}')`:off?`offlineAlert('${p.name}')`:`requestHomeVideoCall('${p.id}')`}" style="${busy||off?'opacity:.55':''}">📹 Chamada de vídeo</button></div><button class="detail" onclick="details('${p.id}')">👤 Ver perfil</button></div></div>`}
@@ -495,28 +425,14 @@ function updateProfileStatuses(){
   }
 }
 
-function render(){
-  const s=search.value.toLowerCase().trim();
-  const c=country.value;
-  const g=gender.value;
-
-  const filtered=profiles.filter(p=>
-    (c==="all" || p.country===c) &&
-    (g==="all" || p.gender===g) &&
-    (`${p.name} ${p.city} ${p.country}`.toLowerCase().includes(s))
-  );
-
-  homeGrid.innerHTML=filtered.map(card).join("") || "Nenhum perfil encontrado";
-  profileGrid.innerHTML=filtered.map(card).join("") || "Nenhum perfil encontrado";
-
-  const liveProfiles=filtered.filter(p=>p.status==="online");
-  liveGrid.innerHTML=liveProfiles.map(p=>card(p,true)).join("") || "Nenhum perfil online encontrado";
-}
+function render(){let s=search.value.toLowerCase(),c=country.value,g=gender.value,a=profiles.filter(p=>(c==="all"||p.country===c)&&(g==="all"||p.gender===g)&&(`${p.name} ${p.city} ${p.country}`.toLowerCase().includes(s)));homeGrid.innerHTML=a.map(card).join("")||"Nenhum perfil encontrado";profileGrid.innerHTML=a.map(card).join("")||"Nenhum perfil encontrado";liveGrid.innerHTML=profiles.filter(p=>p.status==="online").map(p=>card(p,true)).join("");}
 function busyAlert(n){alert(`${n} está ocupada agora. Tente novamente em instantes.`)}
 function offlineAlert(n){alert(`${n} está offline no momento. Tente novamente mais tarde.`)}
 
-search.addEventListener("input",render);
-loadProfilesFromApi();
+loadChatState();
+updateProfileStatuses();
+render();
+setInterval(()=>{updateProfileStatuses();render();},60000);
 
 function page(id,b){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".navBtn").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");renderAccount();renderChatsPage();scrollTo(0,0)}
 function find(id){return profiles.find(p=>p.id===id)}
@@ -525,7 +441,7 @@ function isCurrentChatLocked(){if(hasFullAccess())return false;return globalChat
 function paintThread(){const th=getThread(currentProfile.id);messages.innerHTML=th.map(m=>`<div class="msg ${m.who==='me'?'me':''}">${escape(m.text)}</div>`).join("");if(!hasFullAccess()){if(globalChatLocked)messages.innerHTML+=`<div class="notice">🔒 Você já iniciou conversas com 2 perfis. Todos os chats estão bloqueados. Desbloqueie por <b>R$ 10,00</b>.</div>`;else if(chatLocks[currentProfile.id])messages.innerHTML+=`<div class="notice">🔒 Você enviou 2 mensagens para este perfil. Pague <b>R$ 10,00</b> para continuar conversando.</div>`}messages.scrollTop=99999}
 function applyLockUI(){locked=isCurrentChatLocked();if(locked){chatBar.style.display="none";message.disabled=true;unlockPrice.textContent="R$ 10,00";unlock.classList.add("show")}else{chatBar.style.display="flex";message.disabled=false;unlock.classList.remove("show")}}
 function openChat(id){currentProfile=find(id);chatTitle.textContent=`${currentProfile.name}, ${currentProfile.age}`;chatImg.src=currentProfile.img;if(!hasFullAccess()&&!contactedProfiles.has(id)&&contactedProfiles.size>=2)globalChatLocked=true;paintThread();applyLockUI();chatModal.classList.add("show")}
-function smartReply(text,p){const t=text.toLowerCase();const pools={hello:[`Oi 😊 Como foi seu dia?`,`Olá 😘 Que bom receber sua mensagem!`,`Oi! Estou online agora 💕`],how:[`Estou bem 😊 E você, como está?`,`Estou ótima 💖 E você?`],where:[`Sou de ${p.city}, ${p.country}. E você, de onde é?`,`Estou em ${p.city} 📍 E você?`],age:[`Tenho ${p.age} anos 😊`,`Tenho ${p.age} anos 💕 E você?`],call:[`Podemos conversar mais um pouco por aqui primeiro 😊`,`Claro 😊 você pode usar os botões de chamada acima.`],default:[`Entendi 😊 Me conte mais sobre você.`,`Que legal 💕 O que você gosta de fazer no seu tempo livre?`,`Estou gostando de conversar com você 😘`,`Sim 😊 Estou aqui com você agora.`]};let arr=pools.default;if(/olá|ola|oi|e aí|e ai|hello|hi|hey/.test(t))arr=pools.hello;else if(/como você está|como voce esta|tudo bem|how are/.test(t))arr=pools.how;else if(/onde|cidade|mora|localização|localizacao|where|city|location/.test(t))arr=pools.where;else if(/idade|anos|age|years old/.test(t))arr=pools.age;else if(/ligação|ligacao|chamada|vídeo|video|voz|call|voice/.test(t))arr=pools.call;const seed=String(p.id).split("").reduce((sum,ch)=>sum+ch.charCodeAt(0),0);return arr[(seed+text.length+getThread(p.id).length)%arr.length]}
+function smartReply(text,p){const t=text.toLowerCase();const pools={hello:[`Oi 😊 Como foi seu dia?`,`Olá 😘 Que bom receber sua mensagem!`,`Oi! Estou online agora 💕`],how:[`Estou bem 😊 E você, como está?`,`Estou ótima 💖 E você?`],where:[`Sou de ${p.city}, ${p.country}. E você, de onde é?`,`Estou em ${p.city} 📍 E você?`],age:[`Tenho ${p.age} anos 😊`,`Tenho ${p.age} anos 💕 E você?`],call:[`Podemos conversar mais um pouco por aqui primeiro 😊`,`Claro 😊 você pode usar os botões de chamada acima.`],default:[`Entendi 😊 Me conte mais sobre você.`,`Que legal 💕 O que você gosta de fazer no seu tempo livre?`,`Estou gostando de conversar com você 😘`,`Sim 😊 Estou aqui com você agora.`]};let arr=pools.default;if(/olá|ola|oi|e aí|e ai|hello|hi|hey/.test(t))arr=pools.hello;else if(/como você está|como voce esta|tudo bem|how are/.test(t))arr=pools.how;else if(/onde|cidade|mora|localização|localizacao|where|city|location/.test(t))arr=pools.where;else if(/idade|anos|age|years old/.test(t))arr=pools.age;else if(/ligação|ligacao|chamada|vídeo|video|voz|call|voice/.test(t))arr=pools.call;return arr[(p.id.charCodeAt(1)+text.length+getThread(p.id).length)%arr.length]}
 function showTyping(){const el=document.createElement("div");el.id="typingIndicator";el.className="msg typing";el.innerHTML='<b style="font-size:11px;margin-right:7px">Digitando</b><span></span><span></span><span></span>';messages.appendChild(el);messages.scrollTop=99999}
 function hideTyping(){document.getElementById("typingIndicator")?.remove()}
 function sendMessage(){if(isCurrentChatLocked())return;let t=message.value.trim();if(!t)return;if(!hasFullAccess()&&!contactedProfiles.has(currentProfile.id)){contactedProfiles.add(currentProfile.id);if(contactedProfiles.size>2){globalChatLocked=true;paintThread();applyLockUI();saveChatState();return}}const pid=currentProfile.id,p=currentProfile,th=getThread(pid);th.push({who:"me",text:t,time:Date.now()});messageCounts[pid]=(messageCounts[pid]||0)+1;chatLog.unshift(`${p.name}: ${t}`);message.value="";saveChatState();paintThread();showTyping();message.disabled=true;renderChatsPage();setTimeout(()=>{hideTyping();th.push({who:"them",text:smartReply(t,p),time:Date.now()});notes.unshift(`${p.name} respondeu em 2 segundos`);if(!hasFullAccess()&&messageCounts[pid]>=2)chatLocks[pid]=true;saveChatState();paintThread();applyLockUI();renderAccount();renderChatsPage()},2000)}
@@ -544,72 +460,34 @@ function requestPaidCall(type){if(!currentProfile)return;const alreadyPaid=type=
 function unlockChatPaidCall(){if(!currentProfile||!pendingChatCallType)return;const isVoice=pendingChatCallType==='voice',price=isVoice?VOICE_CALL_PRICE:VIDEO_CALL_PRICE;const id=currentProfile.id;const type=pendingChatCallType;chatCallPayModal.classList.remove('show');openPixGateway(type==='voice'?'voice':'chatVideo',id,price,`${isVoice?'Chamada de voz':'Chamada de vídeo'} com ${currentProfile.name}`)}
 
 
-// REAL LG PAY FLOW
-// No pending/recharge record is created in this frontend.
-// Backend calls LG Pay and returns only the payment URL.
-// Payment confirmation/access should be handled later by your verified backend callback.
+// PAYMENT FLOW RULE:
+// Every paid action must open the PIX gateway first.
+// Access/call/chat is granted only inside confirmPixPaymentDemo() after confirmation.
 
-async function openPixGateway(kind,id,amount,description,meta={}){
-  const payWindow=window.open("about:blank","_blank");
-
-  if(!payWindow){
-    alert("Permita pop-ups para abrir o pagamento.");
-    return;
-  }
-
-  try{
-    payWindow.document.write(
-      '<!doctype html><html><body style="margin:0;background:#0b0810;color:#fff;font-family:Arial;display:grid;place-items:center;height:100vh"><div>Carregando pagamento...</div></body></html>'
-    );
-
-    let phone="";
-    try{
-      const session=JSON.parse(localStorage.getItem("arinaLoginSession")||"null");
-      phone=session?.phone||"";
-    }catch(e){}
-
-    const response=await fetch("/api/payments/create",{
-      method:"POST",
-      credentials:"same-origin",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        kind,
-        profileId:id,
-        amount:Number(amount),
-        description:String(description||"Pagamento Arina"),
-        planId:meta.planId||"",
-        phone
-      })
-    });
-
-    const data=await response.json().catch(()=>({
-      ok:false,
-      error:"Resposta inválida do gateway"
-    }));
-
-    if(!response.ok || !data.ok || !data.payUrl){
-      throw new Error(data.error||"Não foi possível criar o pagamento");
-    }
-
-    payWindow.location.href=data.payUrl;
-
-  }catch(error){
-    try{payWindow.close()}catch(e){}
-    alert(error.message||"Erro ao abrir pagamento");
-  }
+let pixPending=null;
+function openPixGateway(kind,id,amount,description,meta={}){
+  pixPending={kind,id,amount,description,...meta};
+  const modal=document.getElementById('pixGatewayModal');
+  const amountEl=document.getElementById('pixAmount');
+  const descEl=document.getElementById('pixDescription');
+  const statusEl=document.getElementById('pixStatus');
+  if(amountEl) amountEl.textContent=money(amount);
+  if(descEl) descEl.textContent=`${description}. Pague ${money(amount)} via PIX. O acesso continuará bloqueado até a confirmação do pagamento.`;
+  if(statusEl) statusEl.textContent='Aguardando pagamento via PIX...';
+  if(!modal){alert('Não foi possível abrir o gateway de pagamento PIX.');return;}
+  modal.classList.add('show');
+  modal.style.display='flex';
+  modal.style.zIndex='9999';
+  document.body.style.overflow='hidden';
 }
-
-// Kept only so old HTML modal buttons do not throw if clicked accidentally.
 function closePixGateway(){
-  const modal=document.getElementById("pixGatewayModal");
-  if(modal){
-    modal.classList.remove("show");
-    modal.style.display="none";
-  }
-  document.body.style.overflow="";
+  const modal=document.getElementById('pixGatewayModal');
+  if(modal){modal.classList.remove('show');modal.style.display='none';}
+  document.body.style.overflow='';
+  pixPending=null;
 }
-function copyPixCode(){}
-function confirmPixPaymentDemo(){}
+function copyPixCode(){const el=document.getElementById('pixCopiarCode');el.select();el.setSelectionRange(0,99999);if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(el.value).catch(()=>{});else try{document.execCommand('copy')}catch(e){}pixStatus.textContent='Código PIX copiado.'}
+function confirmPixPaymentDemo(){if(!pixPending)return;const {kind,id,amount,planId}=pixPending;const p=find(id);if(!p)return;pixStatus.textContent='Pagamento confirmado. Liberando acesso...';if(kind==='homeVideo'){paidHomeVideoProfiles.add(id);notes.unshift(`PIX confirmado: chamada de vídeo inicial com ${p.name} por ${money(amount)}`)}else if(kind==='voice'){paidVoiceProfiles.add(id);notes.unshift(`PIX confirmado: chamada de voz com ${p.name} por ${money(amount)}`)}else if(kind==='chatVideo'){paidVideoProfiles.add(id);notes.unshift(`PIX confirmado: chamada de vídeo no chat com ${p.name} por ${money(amount)}`)}else if(kind==='plan'){const plan=ACCESS_PLANS[planId];if(plan){if(plan.scope==='full'){fullAccessUntil=extendUntil(fullAccessUntil,plan.ms);globalChatLocked=false;Object.keys(chatLocks).forEach(k=>chatLocks[k]=false)}else{videoPassUntil=extendUntil(videoPassUntil,plan.ms)}notes.unshift(`PIX confirmado: ${plan.label} ativado por ${money(amount)}`)}}else if(kind==='wallet'){wallet+=amount;notes.unshift(`PIX confirmado: ${money(amount)} adicionado à carteira`)}else if(kind==='chat'){if(globalChatLocked){globalChatLocked=false;contactedProfiles.clear();Object.keys(chatLocks).forEach(k=>chatLocks[k]=false);Object.keys(messageCounts).forEach(k=>messageCounts[k]=0);notes.unshift(`PIX confirmado: todos os chats desbloqueados por ${money(amount)}`)}else{paidChatProfiles.add(id);chatLocks[id]=false;messageCounts[id]=0;notes.unshift(`PIX confirmado: chat com ${p.name} desbloqueado por ${money(amount)}`)}getThread(id).push({who:"them",text:"✅ Pagamento confirmado. Chat desbloqueado!"})}const nextKind=kind;const pixModal=document.getElementById('pixGatewayModal');if(pixModal){pixModal.classList.remove('show');pixModal.style.display='none';}document.body.style.overflow='';pixPending=null;pendingChatCallType=null;renderAccount();if(nextKind==='wallet'||nextKind==='plan'){refreshActivePassBox();renderAccount();return}if(nextKind==='chat'){if(currentProfile&&currentProfile.id===id){paintThread();applyLockUI()}return}if(nextKind==='voice')startVoiceCall(id);else if(nextKind==='chatVideo')startCall(id,'chat');else startCall(id,'home')}
 function startVoiceCall(id){if(!hasFullAccess()&&!paidVoiceProfiles.has(id)){const p=find(id);if(p){currentProfile=p;requestPaidCall('voice')}return}let p=find(id);if(!p)return;callImg.src=p.img;callTitle.textContent=`📞 ${p.name}, ${p.age} • Chamada de voz`;callModal.classList.add("show");sec=0;clearInterval(interval);interval=setInterval(()=>{sec++;timer.textContent=String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")},1000);callLog.unshift(`${p.name} — chamada de voz iniciada`)}
 function recharge(){openPlans()}
 function setCurrency(){currentRate=rates.Brazil;myCountry.value="Brazil";render();renderAccount()}
