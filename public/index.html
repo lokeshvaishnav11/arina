@@ -1,5 +1,7 @@
+
+
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -239,135 +241,200 @@ input,select,textarea{width:100%;padding:14px 15px;border-radius:15px;border:1px
   }
 }
 
+
+/* Pakistan payment gateway chooser */
+.gatewayChoiceGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:18px;
+}
+.gatewayChoice{
+  padding:20px 14px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.12);
+  background:linear-gradient(145deg,#201529,#120d18);
+  color:#fff;
+  text-align:center;
+  font-weight:900;
+  transition:.2s ease;
+}
+.gatewayChoice:hover{
+  transform:translateY(-2px);
+  border-color:rgba(255,255,255,.25);
+}
+.gatewayChoice .gatewayIcon{
+  display:grid;
+  place-items:center;
+  width:62px;
+  height:62px;
+  margin:0 auto 10px;
+  border-radius:18px;
+  font-size:27px;
+  background:rgba(255,255,255,.08);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+}
+.gatewayChoice small{
+  display:block;
+  margin-top:6px;
+  color:var(--muted);
+  font-weight:650;
+}
+@media(max-width:430px){
+  .gatewayChoiceGrid{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
 
 <header>
-<div class="logo">ARINA <span>WEB CALL</span><small>CONHEÇA • CONVERSE • CONECTE-SE</small></div>
+<div class="logo">ARINA <span>WEB CALL</span><small>MEET • CHAT • CONNECT</small></div>
 <nav>
-<button class="navBtn active" onclick="page('home',this)">Início</button>
+<button class="navBtn active" onclick="page('home',this)">Home</button>
 <button class="navBtn" onclick="page('live',this)">🟢 Online</button>
-<button class="navBtn" onclick="page('profiles',this)">Perfis</button>
+<button class="navBtn" onclick="page('profiles',this)">Profiles</button>
 <button class="navBtn" onclick="page('chats',this)">💬 Chat</button>
-<button class="navBtn" onclick="page('account',this)">Conta</button>
+<button class="navBtn" onclick="page('account',this)">Account</button>
 </nav>
-<div class="headerActions"><button class="topBtn upgradeCta" onclick="openUpgradePanel()"><span class="upgradeHot">HOT</span>⬆ ASSINAR</button></div>
+<div class="headerActions"><button class="topBtn upgradeCta" onclick="openUpgradePanel()"><span class="upgradeHot">HOT</span>⬆ UPGRADE</button></div>
 </header>
 
 <section id="home" class="page active">
 <div class="hero">
   <div class="heroCopiar">
-    <div class="eyebrow"><i></i> Comunidade online agora</div>
-    <h1>Conheça, converse e <span>conecte-se online</span></h1>
-    <p>Descubra perfis, inicie conversas e faça chamadas privadas em uma experiência moderna, rápida e envolvente.</p>
-    <div class="heroActions"><button class="primary" onclick="page('profiles')">Explorar Perfis</button><button class="ghostBtn" onclick="page('live')">Ver Quem Está Online</button></div>
-    <div class="heroStats"><div class="statPill"><b>Mais de 200 mil</b> perfis</div><div class="statPill"><b>50+</b> países</div><div class="statPill"><b>Online</b> agora</div></div>
+    <div class="eyebrow"><i></i> Community online now</div>
+    <h1>Meet, chat and <span>connect online</span></h1>
+    <p>Discover profiles, start conversations and make private calls in a modern, fast and engaging experience.</p>
+    <div class="heroActions"><button class="primary" onclick="page('profiles')">Explore Profiles</button><button class="ghostBtn" onclick="page('live')">See Who Is Online</button></div>
+    <div class="heroStats"><div class="statPill"><b>More than 200K</b> profiles</div><div class="statPill"><b>50+</b> countries</div><div class="statPill"><b>Online</b> now</div></div>
   </div>
   <div class="heroVisual">
     <div class="heroOrb"></div>
     <div class="heroCard hc1"><img src="https://randomuser.me/api/portraits/women/44.jpg"><b>Sofia, 24 ✓</b><small>● Online</small></div>
-    <div class="heroCard hc2"><img src="https://randomuser.me/api/portraits/women/68.jpg"><b>Kiara, 22 ✓</b><small>● Disponível</small></div>
-    <div class="heroCard hc3"><img src="https://randomuser.me/api/portraits/women/32.jpg"><b>Luna, 25 ✓</b><small>📹 Vídeo disponível</small></div>
+    <div class="heroCard hc2"><img src="https://randomuser.me/api/portraits/women/68.jpg"><b>Kiara, 22 ✓</b><small>● Available</small></div>
+    <div class="heroCard hc3"><img src="https://randomuser.me/api/portraits/women/32.jpg"><b>Luna, 25 ✓</b><small>📹 Video available</small></div>
   </div>
 </div>
-<h2 class="sectionTitle">Perfis populares</h2>
+<h2 class="sectionTitle">Popular Profiles</h2>
 <div class="toolbar">
-<input id="search" placeholder="Buscar nome, cidade ou país">
-<select id="country" onchange="render()"><option value="all">🌍 Todos os países</option></select>
-<select id="gender" onchange="render()"><option value="all">Todos os gêneros</option><option value="Female">Feminino</option><option value="Male">Masculino</option><option value="Other">Outro</option></select>
-<button class="primary" onclick="render()">Buscar</button>
+<input id="search" placeholder="Search name, city or country">
+<select id="country" onchange="render()"><option value="all">🌍 All countries</option></select>
+<select id="gender" onchange="render()"><option value="all">All genders</option><option value="Female">Female</option><option value="Male">Male</option><option value="Other">Other</option></select>
+<button class="primary" onclick="render()">Search</button>
 </div>
 <div id="homeGrid" class="grid"></div>
 </section>
 
-<section id="live" class="page"><div class="panel"><h1>Online agora</h1><p class="muted">Perfis disponíveis agora para chat e chamadas privadas.</p></div><h2 class="sectionTitle">Perfis online</h2><div id="liveGrid" class="grid"></div></section>
-<section id="profiles" class="page"><h2>Todos os perfis</h2><div id="profileGrid" class="grid"></div></section>
+<section id="live" class="page"><div class="panel"><h1>Online now</h1><p class="muted">Profiles available now for chat and private calls.</p></div><h2 class="sectionTitle">Online Profiles</h2><div id="liveGrid" class="grid"></div></section>
+<section id="profiles" class="page"><h2>All Profiles</h2><div id="profileGrid" class="grid"></div></section>
 
-<section id="chats" class="page"><div class="panel"><h1>💬 Conversas</h1><p class="muted">Veja suas conversas anteriores e continue de onde parou.</p><div id="allChatHistory" class="list" style="margin-top:20px"></div></div></section>
+<section id="chats" class="page"><div class="panel"><h1>💬 Conversations</h1><p class="muted">View your previous conversations and continue where you left off.</p><div id="allChatHistory" class="list" style="margin-top:20px"></div></div></section>
 
 <section id="account" class="page"><div class="panel">
-<h1>Minha conta</h1>
-<div class="wallet"><div><b>Assinar</b><span class="muted" id="currencyText">Brasil • Real brasileiro (BRL)</span></div><button class="primary" onclick="recharge()">Assinar</button></div>
-<input id="myName" placeholder="Seu nome"><br><br><select id="myCountry" onchange="setCurrency()"></select><br><br>
-<textarea placeholder="Escreva sobre você"></textarea><br><br><button class="primary" onclick="saveAccount()">Salvar perfil</button>
-<h2 class="sectionTitle">❤️ Favoritos</h2><div id="favorites" class="list"></div>
-<h2 class="sectionTitle">💬 Histórico de chats</h2><div id="chatHistory" class="list"></div>
-<h2 class="sectionTitle">📹 Histórico de chamadas</h2><div id="callHistory" class="list"></div>
-<h2 class="sectionTitle">🔔 Notificações</h2><div id="notifications" class="list"></div>
-<h2 class="sectionTitle">Segurança e ajuda</h2><div class="item">Denuncie perfis falsos ou abusivos. Nunca compartilhe senhas, códigos OTP ou dados bancários. Use a opção Bloquear se alguém fizer você se sentir desconfortável.</div>
+<h1>My Account</h1>
+<div class="wallet"><div><b>Upgrade</b><span class="muted" id="currencyText">Pakistan • Pakistani Rupee (PKR)</span></div><button class="primary" onclick="recharge()">Upgrade</button></div>
+<input id="myName" placeholder="Your name"><br><br><select id="myCountry" onchange="setCurrency()"></select><br><br>
+<textarea placeholder="Write about yourself"></textarea><br><br><button class="primary" onclick="saveAccount()">Save Profile</button>
+<h2 class="sectionTitle">❤️ Favorites</h2><div id="favorites" class="list"></div>
+<h2 class="sectionTitle">💬 Chat History</h2><div id="chatHistory" class="list"></div>
+<h2 class="sectionTitle">📹 Call History</h2><div id="callHistory" class="list"></div>
+<h2 class="sectionTitle">🔔 Notifications</h2><div id="notifications" class="list"></div>
+<h2 class="sectionTitle">Safety & Help</h2><div class="item">Report fake or abusive profiles. Never share passwords, OTP codes, or banking details. Use Block if someone makes you uncomfortable.</div>
 </div></section>
 
-<section id="login" class="page"><div class="panel" style="max-width:460px"><h1>Bem-vindo de volta</h1><br><input placeholder="E-mail ou celular"><br><br><input type="password" placeholder="Senha"><br><br><button class="primary" onclick="alert('Login de demonstração realizado com sucesso');page('home')">Entrar</button><p class="muted">Novo por aqui? Cadastre-se abaixo.</p><button class="detail" onclick="page('register')">Criar conta</button></div></section>
-<section id="register" class="page"><div class="panel" style="max-width:460px"><h1>Criar conta</h1><br><input placeholder="Nome completo"><br><br><input placeholder="Country"><br><br><input placeholder="Email"><br><br><input type="password" placeholder="Senha"><br><br><button class="primary" onclick="alert('Conta de demonstração criada com sucesso');page('account')">Cadastrar</button></div></section>
+<section id="login" class="page"><div class="panel" style="max-width:460px"><h1>Welcome Back</h1><br><input placeholder="Email or mobile"><br><br><input type="password" placeholder="Password"><br><br><button class="primary" onclick="alert('Demo login successful');page('home')">Log In</button><p class="muted">New here? Create an account below.</p><button class="detail" onclick="page('register')">Create Account</button></div></section>
+<section id="register" class="page"><div class="panel" style="max-width:460px"><h1>Create Account</h1><br><input placeholder="Full Name"><br><br><input placeholder="Country"><br><br><input placeholder="Email"><br><br><input type="password" placeholder="Password"><br><br><button class="primary" onclick="alert('Demo account created successfully');page('account')">Sign Up</button></div></section>
 
 <div id="chatModal" class="modal"><div class="box">
-<div class="modalHead"><img id="chatImg"><div><b id="chatTitle"></b><small class="muted">● Online</small></div><div class="chatTools"><button class="callMini locked" onclick="requestPaidCall('voice')">📞 Chamada de voz</button><button class="callMini locked" onclick="requestPaidCall('video')">📹 Chamada de vídeo</button></div><button class="close" onclick="closeModal('chatModal')">✕</button></div>
+<div class="modalHead"><img id="chatImg"><div><b id="chatTitle"></b><small class="muted">● Online</small></div><div class="chatTools"><button class="callMini locked" onclick="requestPaidCall('voice')">📞 Voice Call</button><button class="callMini locked" onclick="requestPaidCall('video')">📹 Video Call</button></div><button class="close" onclick="closeModal('chatModal')">✕</button></div>
 <div id="messages" class="messages"></div>
-<div id="chatBar" class="chatBar"><input id="message" placeholder="Escreva uma mensagem..." onkeydown="if(event.key==='Enter')sendMessage()"><button onclick="sendMessage()">Enviar</button></div>
-<div id="unlock" class="unlock"><p>🔒 Chat bloqueado. Pague <b id="unlockPrice"></b> para continuar.</p><button class="primary" onclick="unlockChat()">Pagar e desbloquear</button></div>
+<div id="chatBar" class="chatBar"><input id="message" placeholder="Write a message..." onkeydown="if(event.key==='Enter')sendMessage()"><button onclick="sendMessage()">Send</button></div>
+<div id="unlock" class="unlock"><p>🔒 Chat locked. Pay <b id="unlockPrice"></b> to continue.</p><button class="primary" onclick="unlockChat()">Pay & Unlock</button></div>
 </div></div>
 
 <div id="homeVideoPayModal" class="modal"><div class="box" style="max-width:420px;text-align:center;padding:26px">
 <button class="close" style="float:right" onclick="closeModal('homeVideoPayModal')">✕</button>
 <div style="font-size:46px;margin-top:18px">🔒</div>
-<h2 style="margin:10px 0 6px">Chamada de vídeo bloqueada</h2>
-<p class="muted" id="homeVideoPayText">Pague R$ 10,00 para iniciar a chamada de vídeo.</p>
-<button class="primary" style="width:100%;margin-top:14px" onclick="unlockHomeVideoCall()">Pagar agora • R$ 10,00 • Chamada de vídeo</button>
+<h2 style="margin:10px 0 6px">Video Call Locked</h2>
+<p class="muted" id="homeVideoPayText">Pay PKR 349 to start the video call.</p>
+<button class="primary" style="width:100%;margin-top:14px" onclick="unlockHomeVideoCall()">Pay Now • PKR 349 • Video Call</button>
 </div></div>
 
 
 <div id="chatCallPayModal" class="modal"><div class="box" style="max-width:420px;text-align:center;padding:26px">
 <button class="close" style="float:right" onclick="closeModal('chatCallPayModal')">✕</button>
 <div style="font-size:48px;margin-top:8px" id="chatCallPayIcon">🔒</div>
-<h2 style="margin:10px 0 6px" id="chatCallPayTitle">Chamada bloqueada</h2>
-<p class="muted" id="chatCallPayText">Pague para desbloquear a chamada.</p>
-<button class="primary" id="chatCallPayButton" style="width:100%;margin-top:14px" onclick="unlockChatPaidCall()">Pagar agora</button>
+<h2 style="margin:10px 0 6px" id="chatCallPayTitle">Call Locked</h2>
+<p class="muted" id="chatCallPayText">Pay to unlock the call.</p>
+<button class="primary" id="chatCallPayButton" style="width:100%;margin-top:14px" onclick="unlockChatPaidCall()">Pay Now</button>
 </div></div>
 
 
 <div id="plansModal" class="modal"><div class="box" style="max-width:760px;padding:24px">
 <button class="close" style="float:right" onclick="closeModal('plansModal')">✕</button>
-<h2 style="margin:4px 0 5px">Escolha um plano de acesso</h2>
-<p class="muted">Pague com segurança via PIX. O acesso começa somente após a confirmação do pagamento.</p>
+<h2 style="margin:4px 0 5px">Choose an Access Plan</h2>
+<p class="muted">Pay securely. Access starts only after payment confirmation.</p>
 <div id="activePassBox" class="activePass" style="display:none"></div>
 <div class="planGrid">
-  <div class="planCard"><h3>Passe de vídeo por 1 hora</h3><div class="planPrice">R$ 10,00</div><p>Chamadas de vídeo ilimitadas por 1 hora após a confirmação do pagamento.</p><button class="primary" onclick="buyAccessPlan('video1h')">Pagar com PIX</button></div>
-  <div class="planCard"><h3>Passe de vídeo por 3 horas</h3><div class="planPrice">R$ 18,00</div><p>Chamadas de vídeo ilimitadas por 3 horas após a confirmação do pagamento.</p><button class="primary" onclick="buyAccessPlan('video3h')">Pagar com PIX</button></div>
-  <div class="planCard"><h3>Passe de vídeo por 1 dia</h3><div class="planPrice">R$ 28,00</div><p>Chamadas de vídeo ilimitadas por 24 horas após a confirmação do pagamento.</p><button class="primary" onclick="buyAccessPlan('video1d')">Pagar com PIX</button></div>
-  <div class="planCard"><h3>Passe de vídeo por 7 dias</h3><div class="planPrice">R$ 49,00</div><p>Chamadas de vídeo ilimitadas por 7 dias após a confirmação do pagamento.</p><button class="primary" onclick="buyAccessPlan('video7d')">Pagar com PIX</button></div>
-  <div class="planCard planHot" style="grid-column:1/-1"><span class="hotBadge">🔥 HOT</span><h3>Acesso completo por 1 mês</h3><div class="planPrice">R$ 101,00</div><p>Acesso completo por 30 dias: chamadas de vídeo, chamadas de voz, chat e acesso à área online incluídos.</p><button class="primary" onclick="buyAccessPlan('full30d')">Obter acesso completo • R$ 101,00</button></div>
+  <div class="planCard"><h3>1-Hour Video Pass</h3><div class="planPrice">PKR 349</div><p>Unlimited video calls for 1 hour after payment confirmation.</p><button class="primary" onclick="buyAccessPlan('video1h')">Pay Securely</button></div>
+  <div class="planCard"><h3>3-Hour Video Pass</h3><div class="planPrice">PKR 649</div><p>Unlimited video calls for 3 hours after payment confirmation.</p><button class="primary" onclick="buyAccessPlan('video3h')">Pay Securely</button></div>
+  <div class="planCard"><h3>1-Day Video Pass</h3><div class="planPrice">PKR 999</div><p>Unlimited video calls for 24 hours after payment confirmation.</p><button class="primary" onclick="buyAccessPlan('video1d')">Pay Securely</button></div>
+  <div class="planCard"><h3>7-Day Video Pass</h3><div class="planPrice">PKR 1299</div><p>Unlimited video calls for 7 days after payment confirmation.</p><button class="primary" onclick="buyAccessPlan('video7d')">Pay Securely</button></div>
+  <div class="planCard planHot" style="grid-column:1/-1"><span class="hotBadge">🔥 HOT</span><h3>Full Access for 5 Month</h3><div class="planPrice">PKR 1599</div><p>Full access for 30 days: video calls, voice calls, chat, and online area access included.</p><button class="primary" onclick="buyAccessPlan('full30d')">Get Full Access • PKR 101</button></div>
 </div></div></div>
+
+
+<div id="gatewayChoiceModal" class="modal">
+  <div class="box" style="max-width:470px;padding:26px">
+    <button class="close" style="float:right" onclick="closeGatewayChoice()">✕</button>
+    <div style="font-size:38px;margin-top:8px">💳</div>
+    <h2 style="margin:10px 0 6px">Choose Payment Method</h2>
+    <p class="muted" id="gatewayChoiceText">Select JazzCash or Easypaisa to continue your PKR payment.</p>
+    <div class="gatewayChoiceGrid">
+      <button class="gatewayChoice" onclick="selectPaymentGateway('easypaisa')">
+        <span class="gatewayIcon">🟢</span>
+        Easypaisa
+        <small>Pay securely in PKR</small>
+      </button>
+      <button class="gatewayChoice" onclick="selectPaymentGateway('jazzcash')">
+        <span class="gatewayIcon">🔴</span>
+        JazzCash
+        <small>Pay securely in PKR</small>
+      </button>
+    </div>
+  </div>
+</div>
 
 <div id="pixGatewayModal" class="modal"><div class="pixSheet">
 <button class="close" style="float:right" onclick="closePixGateway()">✕</button>
-<div class="pixBrand"><div class="pixMark">PIX</div><div>Pagamento via PIX</div></div>
+<div class="pixBrand"><div class="pixMark">PKR</div><div>Pakistan Payment</div></div>
 
-<p class="pixSub" id="pixDescription">Escaneie o QR Code ou copie o código PIX para pagar.</p>
-<div class="pixQr" aria-label="Demo PIX QR Code"></div>
-<div class="pixCode"><input id="pixCopiarCode" readonly value="00020126580014BR.GOV.BCB.PIX0136DEMO-ARINA-WEB-CALL"><button class="primary" onclick="copyPixCode()">Copiar</button></div>
-<div class="pixStatus" id="pixStatus">Aguardando pagamento via PIX...</div>
-<div class="pixActions"><button class="primary" onclick="confirmPixPaymentDemo()">✓ Confirmar pagamento (Demo)</button><button class="pixSecondary" onclick="closePixGateway()">Cancelar</button></div>
-<p class="muted" style="margin-top:14px;font-size:11px">Apenas demonstração visual. Para pagamentos PIX reais, conecte um provedor de pagamento e verifique o status no seu servidor.</p>
+<p class="pixSub" id="pixDescription">Choose JazzCash or Easypaisa to continue your payment.</p>
+<div class="pixQr" aria-label="Pakistan payment placeholder"></div>
+<div class="pixCode"><input id="pixCopiarCode" readonly value="PAYMENT-GATEWAY-SELECTED-ON-CHECKOUT"><button class="primary" onclick="copyPixCode()">Copy</button></div>
+<div class="pixStatus" id="pixStatus">Waiting for payment...</div>
+<div class="pixActions"><button class="primary" onclick="confirmPixPaymentDemo()">✓ Confirm Payment (Demo)</button><button class="pixSecondary" onclick="closePixGateway()">Cancel</button></div>
+<p class="muted" style="margin-top:14px;font-size:11px">Visual demo only. For real payments, connect a payment provider and verify payment status on your server.</p>
 </div></div>
 
 <div id="callModal" class="modal"><div class="box callScreen"><img id="callImg"><div class="callTop"><b id="callTitle"></b><b id="timer">00:00</b></div><div class="callBottom"><button class="end" onclick="closeCall()">☎</button></div></div></div>
 
-<div id="profileModal" class="modal"><div class="box"><button class="close" style="float:right;margin:10px" onclick="closeModal('profileModal')">✕</button><img id="detailImg" class="profileBig"><div style="padding:20px"><h1 id="detailTitle"></h1><p id="detailText" class="muted"></p><br><button class="primary" id="detailChat">💬 Chat</button><button class="detail" id="reportBtn">Denunciar / Bloquear</button></div></div></div>
+<div id="profileModal" class="modal"><div class="box"><button class="close" style="float:right;margin:10px" onclick="closeModal('profileModal')">✕</button><img id="detailImg" class="profileBig"><div style="padding:20px"><h1 id="detailTitle"></h1><p id="detailText" class="muted"></p><br><button class="primary" id="detailChat">💬 Chat</button><button class="detail" id="reportBtn">Report / Block</button></div></div></div>
 
 
 <div id="upgradeOverlay" class="upgradeOverlay" onclick="if(event.target===this)closeUpgradePanel()">
   <aside class="upgradePanel">
     <div class="upgradeHead">
-      <div><small class="muted">Planos premium</small><h2>Assinar plano</h2></div>
+      <div><small class="muted">Premium Plans</small><h2>Upgrade Plan</h2></div>
       <button class="upgradeClose" onclick="closeUpgradePanel()">✕</button>
     </div>
     <div class="planStack">
-      <div class="planCard"><h3>R$ 10,00</h3><p>1 hora de chamadas de vídeo ilimitadas</p><button onclick="selectUpgradePlan(10,'1 hora de chamadas de vídeo ilimitadas','video_1h')">Escolher plano</button></div>
-      <div class="planCard"><h3>R$ 18,00</h3><p>3 horas de chamadas de vídeo ilimitadas</p><button onclick="selectUpgradePlan(18,'3 horas de chamadas de vídeo ilimitadas','video_3h')">Escolher plano</button></div>
-      <div class="planCard"><h3>R$ 28,00</h3><p>1 dia de chamadas de vídeo ilimitadas</p><button onclick="selectUpgradePlan(28,'1 dia de chamadas de vídeo ilimitadas','video_1d')">Escolher plano</button></div>
-      <div class="planCard"><h3>R$ 49,00</h3><p>7 dias de chamadas de vídeo ilimitadas</p><button onclick="selectUpgradePlan(49,'7 dias de chamadas de vídeo ilimitadas','video_7d')">Escolher plano</button></div>
-      <div class="planCard hot"><span class="hotBadge">🔥 HOT</span><h3>R$ 101,00</h3><p><b>Acesso completo por 1 mês</b><br>Chamadas de vídeo + chamadas de voz + chat + acesso online</p><button onclick="selectUpgradePlan(101,'Acesso completo por 1 mês','full_1m')">Obter acesso completo</button></div>
+      <div class="planCard"><h3>PKR 349</h3><p>1 hour of unlimited video calls</p><button onclick="selectUpgradePlan(349,'1 hour of unlimited video calls','video_1h')">Choose Plan</button></div>
+      <div class="planCard"><h3>PKR 699</h3><p>3 hours of unlimited video calls</p><button onclick="selectUpgradePlan(699,'3 hours of unlimited video calls','video_3h')">Choose Plan</button></div>
+      <div class="planCard"><h3>PKR 999</h3><p>1 day of unlimited video calls</p><button onclick="selectUpgradePlan(999,'1 day of unlimited video calls','video_1d')">Choose Plan</button></div>
+      <div class="planCard"><h3>PKR 1299</h3><p>7 days of unlimited video calls</p><button onclick="selectUpgradePlan(1299,'7 days of unlimited video calls','video_7d')">Choose Plan</button></div>
+      <div class="planCard hot"><span class="hotBadge">🔥 HOT</span><h3>PKR 1499</h3><p><b>Full Access for 1 Month</b><br>Video calls + voice calls + chat + online access</p><button onclick="selectUpgradePlan(1499,'Full Access for 1 Month','full_1m')">Get Full Access</button></div>
     </div>
   </aside>
 </div>
@@ -388,10 +455,10 @@ function selectUpgradePlan(amount,label,planKey){
   const realPlanId=planMap[planKey];
   const plan=realPlanId && ACCESS_PLANS[realPlanId];
   if(plan){
-    if(!profiles.length)return alert("Nenhum perfil disponível.");openPixGateway("plan",profiles[0].id,plan.price,plan.label,{planId:realPlanId});
+    if(!profiles.length)return alert("No profiles available.");openPixGateway("plan",profiles[0].id,plan.price,plan.label,{planId:realPlanId});
     return;
   }
-  if(!profiles.length)return alert("Nenhum perfil disponível.");openPixGateway("plan",profiles[0].id,Number(amount),label,{planId:realPlanId||planKey});
+  if(!profiles.length)return alert("No profiles available.");openPixGateway("plan",profiles[0].id,Number(amount),label,{planId:realPlanId||planKey});
 }
 
 let profiles=[];
@@ -400,10 +467,10 @@ let countries=[];
 async function loadProfilesFromApi(){
   try{
     const response=await fetch("/api/profiles",{credentials:"same-origin"});
-    const data=await response.json().catch(()=>({ok:false,error:"Resposta inválida da API"}));
+    const data=await response.json().catch(()=>({ok:false,error:"Invalid API response"}));
 
     if(!response.ok || !data.ok){
-      throw new Error(data.error || "Não foi possível carregar os perfis");
+      throw new Error(data.error || "Could not load profiles");
     }
 
     profiles=(data.profiles||[]).map(p=>({
@@ -422,36 +489,26 @@ async function loadProfilesFromApi(){
     render();
   }catch(error){
     console.error("Profiles API error:",error);
-    homeGrid.innerHTML='<div class="item">Não foi possível carregar os perfis.</div>';
-    profileGrid.innerHTML='<div class="item">Não foi possível carregar os perfis.</div>';
+    homeGrid.innerHTML='<div class="item">Could not load profiles.</div>';
+    profileGrid.innerHTML='<div class="item">Could not load profiles.</div>';
     liveGrid.innerHTML='';
   }
 }
 
 function fillCountryFilters(){
-  countries=[...new Set(
-    profiles
-      .map(p=>p.country.trim())
-      .filter(Boolean)
-  )].sort((a,b)=>a.localeCompare(b,"pt-BR"));
-
-  country.innerHTML='<option value="all">🌍 Todos os países</option>';
+  countries=["Pakistan","India","Russia","America"];
+  country.innerHTML='<option value="all">🌍 All countries</option>';
   countries.forEach(c=>country.add(new Option(c,c)));
-
-  const currentMyCountry=myCountry.value || "Brazil";
+  const currentMyCountry=myCountry.value || "Pakistan";
   myCountry.innerHTML="";
   countries.forEach(c=>myCountry.add(new Option(c,c)));
-
-  if(!countries.includes("Brazil")){
-    myCountry.add(new Option("Brazil","Brazil"));
-  }
-
-  myCountry.value=countries.includes(currentMyCountry)?currentMyCountry:"Brazil";
+  myCountry.value=countries.includes(currentMyCountry)?currentMyCountry:"Pakistan";
 }
-const rates={Brazil:{symbol:"R$ ",wallet:0,unlock:10}};
-let wallet=0,currentRate=rates.Brazil,currentProfile=null,locked=false,liked=[],chatLog=[],callLog=[],notes=["Bem-vindo ao Arina Web Call"];
+
+const rates={Pakistan:{symbol:"PKR ",wallet:0,unlock:349}};
+let wallet=0,currentRate=rates.Pakistan,currentProfile=null,locked=false,liked=[],chatLog=[],callLog=[],notes=["Welcome to Arina Web Call"];
 let contactedProfiles=new Set(),globalChatLocked=false;
-const CHAT_UNLOCK_PRICE=10,VOICE_CALL_PRICE=13,VIDEO_CALL_PRICE=16,HOME_VIDEO_CALL_PRICE=10,chatThreads={},messageCounts={},chatLocks={};
+const CHAT_UNLOCK_PRICE=349,VOICE_CALL_PRICE=13,VIDEO_CALL_PRICE=16,HOME_VIDEO_CALL_PRICE=349,chatThreads={},messageCounts={},chatLocks={};
 const CHAT_STORAGE_KEY="arinaWebCallChatHistoryV1";
 function saveChatState(){
   try{
@@ -468,19 +525,19 @@ function loadChatState(){
     if(Array.isArray(saved.contactedProfiles))saved.contactedProfiles.forEach(id=>contactedProfiles.add(id));
   }catch(e){}
 }
-const ACCESS_PLANS={video1h:{price:10,label:"Passe de vídeo por 1 hora",ms:60*60*1000,scope:"video"},video3h:{price:18,label:"Passe de vídeo por 3 horas",ms:3*60*60*1000,scope:"video"},video1d:{price:28,label:"Passe de vídeo por 1 dia",ms:24*60*60*1000,scope:"video"},video7d:{price:49,label:"Passe de vídeo por 7 dias",ms:7*24*60*60*1000,scope:"video"},full30d:{price:101,label:"Acesso completo por 1 mês",ms:30*24*60*60*1000,scope:"full"}};
+const ACCESS_PLANS={video1h:{price:349,label:"1-Hour Video Pass",ms:60*60*1000,scope:"video"},video3h:{price:18,label:"3-Hour Video Pass",ms:3*60*60*1000,scope:"video"},video1d:{price:28,label:"1-Day Video Pass",ms:24*60*60*1000,scope:"video"},video7d:{price:49,label:"7-Day Video Pass",ms:7*24*60*60*1000,scope:"video"},full30d:{price:101,label:"Full Access for 1 Month",ms:30*24*60*60*1000,scope:"full"}};
 let videoPassUntil=0,fullAccessUntil=0;
 function hasVideoPass(){return Date.now()<videoPassUntil||Date.now()<fullAccessUntil}
 function hasFullAccess(){return Date.now()<fullAccessUntil}
 function extendUntil(current,ms){return Math.max(Date.now(),current)+ms}
-function formatAccessTime(ts){if(!ts||ts<=Date.now())return "";return new Date(ts).toLocaleString("pt-BR",{dateStyle:"medium",timeStyle:"short"})}
-function refreshActivePassBox(){const b=document.getElementById("activePassBox");if(!b)return;if(hasFullAccess()){b.style.display="block";b.textContent=`✅ Acesso completo ativo até ${formatAccessTime(fullAccessUntil)}`;}else if(hasVideoPass()){b.style.display="block";b.textContent=`✅ Passe de vídeo ativo até ${formatAccessTime(videoPassUntil)}`;}else b.style.display="none";}
+function formatAccessTime(ts){if(!ts||ts<=Date.now())return "";return new Date(ts).toLocaleString("en-US",{dateStyle:"medium",timeStyle:"short"})}
+function refreshActivePassBox(){const b=document.getElementById("activePassBox");if(!b)return;if(hasFullAccess()){b.style.display="block";b.textContent=`✅ Full access active until ${formatAccessTime(fullAccessUntil)}`;}else if(hasVideoPass()){b.style.display="block";b.textContent=`✅ Video pass active until ${formatAccessTime(videoPassUntil)}`;}else b.style.display="none";}
 function openPlans(){refreshActivePassBox();document.getElementById("plansModal").classList.add("show")}
-function buyAccessPlan(planId){const plan=ACCESS_PLANS[planId];if(!plan)return;document.getElementById("plansModal").classList.remove("show");if(!profiles.length)return alert("Nenhum perfil disponível.");openPixGateway("plan",profiles[0].id,plan.price,plan.label,{planId})}
+function buyAccessPlan(planId){const plan=ACCESS_PLANS[planId];if(!plan)return;document.getElementById("plansModal").classList.remove("show");if(!profiles.length)return alert("No profiles available.");openPixGateway("plan",profiles[0].id,plan.price,plan.label,{planId})}
 const country=document.getElementById("country"),myCountry=document.getElementById("myCountry");
 
-function money(n){return currentRate.symbol+Number(n).toFixed(2).replace(".",",")}
-function card(p,live=false){const busy=p.status==="busy",off=p.status==="offline",label=busy?"🟠 Ocupada":off?"⚫ Offline":"● Online";return `<div class="card"><div class="photo"><img loading="lazy" src="${p.img}" onerror="this.src='https://via.placeholder.com/600x700?text=Perfil'"><span class="badge ${busy?'busy':off?'offline':''}">${label}</span><button class="heart" onclick="like('${p.id}')">♡</button></div><div class="info"><b>${p.name}, ${p.age} ✓</b><div class="muted">📍 ${p.city}, ${p.country}<br>👤 ${p.gender==="Female"?"Feminino":p.gender==="Male"?"Masculino":"Outro"}</div><div class="actions"><button class="chat" onclick="openChat('${p.id}')">💬 Chat</button><button class="call" onclick="${busy?`busyAlert('${p.name}')`:off?`offlineAlert('${p.name}')`:`requestHomeVideoCall('${p.id}')`}" style="${busy||off?'opacity:.55':''}">📹 Chamada de vídeo</button></div><button class="detail" onclick="details('${p.id}')">👤 Ver perfil</button></div></div>`}
+function money(n){return currentRate.symbol+Number(n).toFixed(0)}
+function card(p,live=false){const busy=p.status==="busy",off=p.status==="offline",label=busy?"🟠 Busy":off?"⚫ Offline":"● Online";return `<div class="card"><div class="photo"><img loading="lazy" src="${p.img}" onerror="this.src='https://via.placeholder.com/600x700?text=Profile'"><span class="badge ${busy?'busy':off?'offline':''}">${label}</span><button class="heart" onclick="like('${p.id}')">♡</button></div><div class="info"><b>${p.name}, ${p.age} ✓</b><div class="muted">📍 ${p.city}, ${p.country}<br>👤 ${p.gender==="Female"?"Female":p.gender==="Male"?"Male":"Other"}</div><div class="actions"><button class="chat" onclick="openChat('${p.id}')">💬 Chat</button><button class="call" onclick="${busy?`busyAlert('${p.name}')`:off?`offlineAlert('${p.name}')`:`requestHomeVideoCall('${p.id}')`}" style="${busy||off?'opacity:.55':''}">📹 Video Call</button></div><button class="detail" onclick="details('${p.id}')">👤 View Profile</button></div></div>`}
 function updateProfileStatuses(){
   for(let start=0;start<profiles.length;start+=10){
     const group=profiles.slice(start,start+10);
@@ -489,6 +546,28 @@ function updateProfileStatuses(){
     const busySet=new Set(order.slice(0,3));
     group.forEach((p,i)=>{p.status=busySet.has(i)?"busy":"online";p.busyFor=""});
   }
+}
+
+
+let randomizedViews={
+  home:[],
+  profiles:[],
+  live:[]
+};
+
+function shuffleProfiles(list){
+  const arr=[...list];
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function refreshRandomizedViews(filtered){
+  randomizedViews.home=shuffleProfiles(filtered);
+  randomizedViews.profiles=shuffleProfiles(filtered);
+  randomizedViews.live=shuffleProfiles(filtered.filter(p=>p.status==="online"));
 }
 
 function render(){
@@ -502,42 +581,170 @@ function render(){
     (`${p.name} ${p.city} ${p.country}`.toLowerCase().includes(s))
   );
 
-  homeGrid.innerHTML=filtered.map(card).join("") || "Nenhum perfil encontrado";
-  profileGrid.innerHTML=filtered.map(card).join("") || "Nenhum perfil encontrado";
+  refreshRandomizedViews(filtered);
 
-  const liveProfiles=filtered.filter(p=>p.status==="online");
-  liveGrid.innerHTML=liveProfiles.map(p=>card(p,true)).join("") || "Nenhum perfil online encontrado";
+  homeGrid.innerHTML=randomizedViews.home.map(card).join("") || "No profiles found";
+  profileGrid.innerHTML=randomizedViews.profiles.map(card).join("") || "No profiles found";
+  liveGrid.innerHTML=randomizedViews.live.map(p=>card(p,true)).join("") || "No online profiles found";
 }
-function busyAlert(n){alert(`${n} está ocupada agora. Tente novamente em instantes.`)}
-function offlineAlert(n){alert(`${n} está offline no momento. Tente novamente mais tarde.`)}
+function busyAlert(n){alert(`${n} is busy right now. Please try again shortly.`)}
+function offlineAlert(n){alert(`${n} is offline right now. Please try again later.`)}
 
 search.addEventListener("input",render);
 loadProfilesFromApi();
 
-function page(id,b){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".navBtn").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");renderAccount();renderChatsPage();scrollTo(0,0)}
+function page(id,b){
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll(".navBtn").forEach(x=>x.classList.remove("active"));
+  if(b)b.classList.add("active");
+
+  if(id==="home" || id==="profiles" || id==="live"){
+    const s=search.value.toLowerCase().trim();
+    const c=country.value;
+    const g=gender.value;
+
+    const filtered=profiles.filter(p=>
+      (c==="all" || p.country===c) &&
+      (g==="all" || p.gender===g) &&
+      (`${p.name} ${p.city} ${p.country}`.toLowerCase().includes(s))
+    );
+
+    if(id==="home"){
+      randomizedViews.home=shuffleProfiles(filtered);
+      homeGrid.innerHTML=randomizedViews.home.map(card).join("") || "No profiles found";
+    }else if(id==="profiles"){
+      randomizedViews.profiles=shuffleProfiles(filtered);
+      profileGrid.innerHTML=randomizedViews.profiles.map(card).join("") || "No profiles found";
+    }else if(id==="live"){
+      randomizedViews.live=shuffleProfiles(filtered.filter(p=>p.status==="online"));
+      liveGrid.innerHTML=randomizedViews.live.map(p=>card(p,true)).join("") || "No online profiles found";
+    }
+  }
+
+  renderAccount();
+  renderChatsPage();
+  scrollTo(0,0);
+}
 function find(id){return profiles.find(p=>p.id===id)}
-function getThread(id){if(!chatThreads[id]){chatThreads[id]=[{who:"them",text:`Oi 👋 Eu sou ${find(id).name}. Que bom ver você por aqui 😊`,time:Date.now()}];saveChatState()}return chatThreads[id]}
+function getThread(id){if(!chatThreads[id]){chatThreads[id]=[{who:"them",text:`Hi 👋 I’m ${find(id).name}. Nice to see you here 😊`,time:Date.now()}];saveChatState()}return chatThreads[id]}
 function isCurrentChatLocked(){if(hasFullAccess())return false;return globalChatLocked || !!chatLocks[currentProfile?.id]}
-function paintThread(){const th=getThread(currentProfile.id);messages.innerHTML=th.map(m=>`<div class="msg ${m.who==='me'?'me':''}">${escape(m.text)}</div>`).join("");if(!hasFullAccess()){if(globalChatLocked)messages.innerHTML+=`<div class="notice">🔒 Você já iniciou conversas com 2 perfis. Todos os chats estão bloqueados. Desbloqueie por <b>R$ 10,00</b>.</div>`;else if(chatLocks[currentProfile.id])messages.innerHTML+=`<div class="notice">🔒 Você enviou 2 mensagens para este perfil. Pague <b>R$ 10,00</b> para continuar conversando.</div>`}messages.scrollTop=99999}
-function applyLockUI(){locked=isCurrentChatLocked();if(locked){chatBar.style.display="none";message.disabled=true;unlockPrice.textContent="R$ 10,00";unlock.classList.add("show")}else{chatBar.style.display="flex";message.disabled=false;unlock.classList.remove("show")}}
+function paintThread(){const th=getThread(currentProfile.id);messages.innerHTML=th.map(m=>`<div class="msg ${m.who==='me'?'me':''}">${escape(m.text)}</div>`).join("");if(!hasFullAccess()){if(globalChatLocked)messages.innerHTML+=`<div class="notice">🔒 You have already started conversations with 2 profiles. All chats are locked. Unlock for <b>PKR 349</b>.</div>`;else if(chatLocks[currentProfile.id])messages.innerHTML+=`<div class="notice">🔒 You sent 2 messages to this profile. Pay <b>PKR 349</b> to continue chatting.</div>`}messages.scrollTop=99999}
+function applyLockUI(){locked=isCurrentChatLocked();if(locked){chatBar.style.display="none";message.disabled=true;unlockPrice.textContent="PKR 349";unlock.classList.add("show")}else{chatBar.style.display="flex";message.disabled=false;unlock.classList.remove("show")}}
 function openChat(id){currentProfile=find(id);chatTitle.textContent=`${currentProfile.name}, ${currentProfile.age}`;chatImg.src=currentProfile.img;if(!hasFullAccess()&&!contactedProfiles.has(id)&&contactedProfiles.size>=2)globalChatLocked=true;paintThread();applyLockUI();chatModal.classList.add("show")}
-function smartReply(text,p){const t=text.toLowerCase();const pools={hello:[`Oi 😊 Como foi seu dia?`,`Olá 😘 Que bom receber sua mensagem!`,`Oi! Estou online agora 💕`],how:[`Estou bem 😊 E você, como está?`,`Estou ótima 💖 E você?`],where:[`Sou de ${p.city}, ${p.country}. E você, de onde é?`,`Estou em ${p.city} 📍 E você?`],age:[`Tenho ${p.age} anos 😊`,`Tenho ${p.age} anos 💕 E você?`],call:[`Podemos conversar mais um pouco por aqui primeiro 😊`,`Claro 😊 você pode usar os botões de chamada acima.`],default:[`Entendi 😊 Me conte mais sobre você.`,`Que legal 💕 O que você gosta de fazer no seu tempo livre?`,`Estou gostando de conversar com você 😘`,`Sim 😊 Estou aqui com você agora.`]};let arr=pools.default;if(/olá|ola|oi|e aí|e ai|hello|hi|hey/.test(t))arr=pools.hello;else if(/como você está|como voce esta|tudo bem|how are/.test(t))arr=pools.how;else if(/onde|cidade|mora|localização|localizacao|where|city|location/.test(t))arr=pools.where;else if(/idade|anos|age|years old/.test(t))arr=pools.age;else if(/ligação|ligacao|chamada|vídeo|video|voz|call|voice/.test(t))arr=pools.call;const seed=String(p.id).split("").reduce((sum,ch)=>sum+ch.charCodeAt(0),0);return arr[(seed+text.length+getThread(p.id).length)%arr.length]}
-function showTyping(){const el=document.createElement("div");el.id="typingIndicator";el.className="msg typing";el.innerHTML='<b style="font-size:11px;margin-right:7px">Digitando</b><span></span><span></span><span></span>';messages.appendChild(el);messages.scrollTop=99999}
+function smartReply(text,p){
+  const t=String(text||"").toLowerCase();
+  const countryName=String(p.country||"").toLowerCase();
+  const localStyle=countryName==="pakistan" || countryName==="india";
+
+  let pools;
+
+  if(localStyle){
+    pools={
+      hello:[
+        `Hi 😊 kaise ho?`,
+        `Hey 😊 kya haal hai?`,
+        `Hello 💕 good to see your message.`
+      ],
+      how:[
+        `Main theek hoon 😊 tum kaise ho?`,
+        `I’m good 💖 tum batao, sab theek?`
+      ],
+      where:[
+        `Main ${p.city}, ${p.country} se hoon 😊 tum kahan se ho?`,
+        `I’m from ${p.city} 📍 tum kis city se ho?`
+      ],
+      doing:[
+        `Bas abhi free hoon 😊 tum kya kar rahe ho?`,
+        `Nothing much, bas relax kar rahi hoon 💕 tum kya kar rahe ho?`,
+        `Abhi online hoon 😊 tum batao kya kar rahe ho?`
+      ],
+      age:[
+        `Main ${p.age} years ki hoon 😊 tumhari age kya hai?`,
+        `I’m ${p.age} 😊 tum kitne years ke ho?`
+      ],
+      call:[
+        `Pehle thodi chat karte hain 😊 phir call kar sakte hain.`,
+        `Sure 😊 upar call button use kar sakte ho.`
+      ],
+      default:[
+        `Achha 😊 aur batao apne baare mein.`,
+        `Nice 💕 tum free time mein kya karte ho?`,
+        `Good 😊 tumse baat karke achha lag raha hai.`,
+        `Haan 😊 main yahin hoon, bolo.`
+      ]
+    };
+  }else{
+    pools={
+      hello:[
+        `Hi 😊 How was your day?`,
+        `Hello 😘 Nice to hear from you!`,
+        `Hi! I’m online now 💕`
+      ],
+      how:[
+        `I’m good 😊 How are you?`,
+        `I’m great 💖 How about you?`
+      ],
+      where:[
+        `I’m from ${p.city}, ${p.country}. Where are you from?`,
+        `I’m in ${p.city} 📍 Where are you?`
+      ],
+      doing:[
+        `I’m just relaxing right now 😊 What are you doing?`,
+        `Not much, just online for a while 💕 What are you up to?`
+      ],
+      age:[
+        `I’m ${p.age} years old 😊`,
+        `I’m ${p.age} years old 💕 How old are you?`
+      ],
+      call:[
+        `We can chat here a little more first 😊`,
+        `Sure 😊 you can use the call buttons above.`
+      ],
+      default:[
+        `I understand 😊 Tell me more about yourself.`,
+        `Nice 💕 What do you like to do in your free time?`,
+        `I’m enjoying chatting with you 😘`,
+        `Yes 😊 I’m here with you now.`
+      ]
+    };
+  }
+
+  let arr=pools.default;
+
+  if(/hello|hi|hey|hii|helo|salam|assalam|namaste|hola|oi/.test(t)){
+    arr=pools.hello;
+  }else if(/how are|kaise ho|kaisi ho|kese ho|kya haal|sab theek/.test(t)){
+    arr=pools.how;
+  }else if(/where|city|location|kahan se|kaha se|kidhar se|where are you from/.test(t)){
+    arr=pools.where;
+  }else if(/what are you doing|what r u doing|wyd|kya kar rahe|kya kar rahi|kya kr rhe|kya kr rhi|abhi kya/.test(t)){
+    arr=pools.doing;
+  }else if(/age|years old|kitni age|kitne saal|umar|umr/.test(t)){
+    arr=pools.age;
+  }else if(/call|video|voice|phone|chamada|vídeo|voz/.test(t)){
+    arr=pools.call;
+  }
+
+  const seed=String(p.id).split("").reduce((sum,ch)=>sum+ch.charCodeAt(0),0);
+  return arr[(seed+t.length+getThread(p.id).length)%arr.length];
+}
+function showTyping(){const el=document.createElement("div");el.id="typingIndicator";el.className="msg typing";el.innerHTML='<b style="font-size:11px;margin-right:7px">Typing</b><span></span><span></span><span></span>';messages.appendChild(el);messages.scrollTop=99999}
 function hideTyping(){document.getElementById("typingIndicator")?.remove()}
-function sendMessage(){if(isCurrentChatLocked())return;let t=message.value.trim();if(!t)return;if(!hasFullAccess()&&!contactedProfiles.has(currentProfile.id)){contactedProfiles.add(currentProfile.id);if(contactedProfiles.size>2){globalChatLocked=true;paintThread();applyLockUI();saveChatState();return}}const pid=currentProfile.id,p=currentProfile,th=getThread(pid);th.push({who:"me",text:t,time:Date.now()});messageCounts[pid]=(messageCounts[pid]||0)+1;chatLog.unshift(`${p.name}: ${t}`);message.value="";saveChatState();paintThread();showTyping();message.disabled=true;renderChatsPage();setTimeout(()=>{hideTyping();th.push({who:"them",text:smartReply(t,p),time:Date.now()});notes.unshift(`${p.name} respondeu em 2 segundos`);if(!hasFullAccess()&&messageCounts[pid]>=2)chatLocks[pid]=true;saveChatState();paintThread();applyLockUI();renderAccount();renderChatsPage()},2000)}
-function unlockChat(){if(!currentProfile)return;const id=currentProfile.id;const label=globalChatLocked?"Desbloquear todos os chats":`Desbloquear chat com ${currentProfile.name}`;openPixGateway('chat',id,CHAT_UNLOCK_PRICE,label)}
+function sendMessage(){if(isCurrentChatLocked())return;let t=message.value.trim();if(!t)return;if(!hasFullAccess()&&!contactedProfiles.has(currentProfile.id)){contactedProfiles.add(currentProfile.id);if(contactedProfiles.size>2){globalChatLocked=true;paintThread();applyLockUI();saveChatState();return}}const pid=currentProfile.id,p=currentProfile,th=getThread(pid);th.push({who:"me",text:t,time:Date.now()});messageCounts[pid]=(messageCounts[pid]||0)+1;chatLog.unshift(`${p.name}: ${t}`);message.value="";saveChatState();paintThread();showTyping();message.disabled=true;renderChatsPage();setTimeout(()=>{hideTyping();th.push({who:"them",text:smartReply(t,p),time:Date.now()});notes.unshift(`${p.name} replied in 2 seconds`);if(!hasFullAccess()&&messageCounts[pid]>=2)chatLocks[pid]=true;saveChatState();paintThread();applyLockUI();renderAccount();renderChatsPage()},2000)}
+function unlockChat(){if(!currentProfile)return;const id=currentProfile.id;const label=globalChatLocked?"Unlock all chats":`Unlock chat with ${currentProfile.name}`;openPixGateway('chat',id,CHAT_UNLOCK_PRICE,label)}
 let homeVideoTarget=null;
 const paidHomeVideoProfiles=new Set();
 const paidVoiceProfiles=new Set();
 const paidVideoProfiles=new Set();
 const paidChatProfiles=new Set();
 let paidGlobalChatUnlock=false;
-function requestHomeVideoCall(id){homeVideoTarget=find(id);if(!homeVideoTarget)return;if(hasVideoPass()||paidHomeVideoProfiles.has(id)){startCall(id,'home');return}homeVideoPayText.textContent=`A chamada de vídeo com ${homeVideoTarget.name} está bloqueada. Pague R$ 10,00 para desbloquear.`;homeVideoPayModal.classList.add("show")}
-function unlockHomeVideoCall(){if(!homeVideoTarget)return;homeVideoPayModal.classList.remove('show');openPixGateway('homeVideo',homeVideoTarget.id,HOME_VIDEO_CALL_PRICE,`Chamada de vídeo com ${homeVideoTarget.name}`)}
+function requestHomeVideoCall(id){homeVideoTarget=find(id);if(!homeVideoTarget)return;if(hasVideoPass()||paidHomeVideoProfiles.has(id)){startCall(id,'home');return}homeVideoPayText.textContent=`The video call with ${homeVideoTarget.name} is locked. Pay PKR 349 to unlock.`;homeVideoPayModal.classList.add("show")}
+function unlockHomeVideoCall(){if(!homeVideoTarget)return;homeVideoPayModal.classList.remove('show');openPixGateway('homeVideo',homeVideoTarget.id,HOME_VIDEO_CALL_PRICE,`Video call with ${homeVideoTarget.name}`)}
 
 let pendingChatCallType=null;
-function requestPaidCall(type){if(!currentProfile)return;const alreadyPaid=type==='voice'?(hasFullAccess()||paidVoiceProfiles.has(currentProfile.id)):(hasVideoPass()||paidVideoProfiles.has(currentProfile.id));if(alreadyPaid){if(type==='voice')startVoiceCall(currentProfile.id);else startCall(currentProfile.id,'chat');return}pendingChatCallType=type;const isVoice=type==='voice',price=isVoice?VOICE_CALL_PRICE:VIDEO_CALL_PRICE,priceText=money(price);chatCallPayIcon.textContent=isVoice?'📞':'📹';chatCallPayTitle.textContent=isVoice?'Chamada de voz bloqueada':'Chamada de vídeo bloqueada';chatCallPayText.textContent=`${currentProfile.name}: pague ${priceText} para desbloquear e iniciar a ${isVoice?'chamada de voz':'chamada de vídeo'}.`;chatCallPayButton.textContent=`Pagar agora • ${priceText} • ${isVoice?'Chamada de voz':'Chamada de vídeo'}`;chatCallPayModal.classList.add('show')}
-function unlockChatPaidCall(){if(!currentProfile||!pendingChatCallType)return;const isVoice=pendingChatCallType==='voice',price=isVoice?VOICE_CALL_PRICE:VIDEO_CALL_PRICE;const id=currentProfile.id;const type=pendingChatCallType;chatCallPayModal.classList.remove('show');openPixGateway(type==='voice'?'voice':'chatVideo',id,price,`${isVoice?'Chamada de voz':'Chamada de vídeo'} com ${currentProfile.name}`)}
+function requestPaidCall(type){if(!currentProfile)return;const alreadyPaid=type==='voice'?(hasFullAccess()||paidVoiceProfiles.has(currentProfile.id)):(hasVideoPass()||paidVideoProfiles.has(currentProfile.id));if(alreadyPaid){if(type==='voice')startVoiceCall(currentProfile.id);else startCall(currentProfile.id,'chat');return}pendingChatCallType=type;const isVoice=type==='voice',price=isVoice?VOICE_CALL_PRICE:VIDEO_CALL_PRICE,priceText=money(price);chatCallPayIcon.textContent=isVoice?'📞':'📹';chatCallPayTitle.textContent=isVoice?'Voice Call Locked':'Video Call Locked';chatCallPayText.textContent=`${currentProfile.name}: pay ${priceText} to unlock and start the ${isVoice?'voice call':'video call'}.`;chatCallPayButton.textContent=`Pay Now • ${priceText} • ${isVoice?'Voice Call':'Video Call'}`;chatCallPayModal.classList.add('show')}
+function unlockChatPaidCall(){if(!currentProfile||!pendingChatCallType)return;const isVoice=pendingChatCallType==='voice',price=isVoice?VOICE_CALL_PRICE:VIDEO_CALL_PRICE;const id=currentProfile.id;const type=pendingChatCallType;chatCallPayModal.classList.remove('show');openPixGateway(type==='voice'?'voice':'chatVideo',id,price,`${isVoice?'Voice Call':'Video Call'} with ${currentProfile.name}`)}
 
 
 // REAL LG PAY FLOW
@@ -545,17 +752,46 @@ function unlockChatPaidCall(){if(!currentProfile||!pendingChatCallType)return;co
 // Backend calls LG Pay and returns only the payment URL.
 // Payment confirmation/access should be handled later by your verified backend callback.
 
-async function openPixGateway(kind,id,amount,description,meta={}){
+let pendingGatewayPayment=null;
+
+function openPixGateway(kind,id,amount,description,meta={}){
+  pendingGatewayPayment={
+    kind,
+    id,
+    amount:Number(amount),
+    description:String(description||"Arina Payment"),
+    meta:meta||{}
+  };
+
+  const modal=document.getElementById("gatewayChoiceModal");
+  const textBox=document.getElementById("gatewayChoiceText");
+  if(textBox){
+    textBox.textContent=`Pay PKR ${Number(amount).toFixed(0)} using JazzCash or Easypaisa.`;
+  }
+  modal.classList.add("show");
+}
+
+function closeGatewayChoice(){
+  document.getElementById("gatewayChoiceModal")?.classList.remove("show");
+}
+
+async function selectPaymentGateway(gateway){
+  const payment=pendingGatewayPayment;
+  if(!payment)return;
+
+  closeGatewayChoice();
+
+  const gatewayName=gateway==="jazzcash"?"JazzCash":"Easypaisa";
   const payWindow=window.open("about:blank","_blank");
 
   if(!payWindow){
-    alert("Permita pop-ups para abrir o pagamento.");
+    alert("Allow pop-ups to open the payment page.");
     return;
   }
 
   try{
     payWindow.document.write(
-      '<!doctype html><html><body style="margin:0;background:#0b0810;color:#fff;font-family:Arial;display:grid;place-items:center;height:100vh"><div>Carregando pagamento...</div></body></html>'
+      `<!doctype html><html><body style="margin:0;background:#0b0810;color:#fff;font-family:Arial;display:grid;place-items:center;height:100vh"><div>Loading ${gatewayName} payment...</div></body></html>`
     );
 
     let phone="";
@@ -564,34 +800,47 @@ async function openPixGateway(kind,id,amount,description,meta={}){
       phone=session?.phone||"";
     }catch(e){}
 
-    const response=await fetch("/api/payments/create",{
-      method:"POST",
-      credentials:"same-origin",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        kind,
-        profileId:id,
-        amount:Number(amount),
-        description:String(description||"Pagamento Arina"),
-        planId:meta.planId||"",
-        phone
-      })
-    });
+    /*
+      Same payment-create API is used for both gateways.
+      Backend should read body.gateway:
+        "easypaisa" => create Easypaisa payment
+        "jazzcash"  => create JazzCash payment
+      and return { ok:true, payUrl:"..." }.
+    */
+  const paymentEndpoint =
+  gateway === "jazzcash"
+    ? "/api/payments/create/one"
+    : "/api/payments/create";
 
+const response = await fetch(paymentEndpoint, {
+  method: "POST",
+  credentials: "same-origin",
+  headers: {"Content-Type":"application/json"},
+  body: JSON.stringify({
+    kind: payment.kind,
+    profileId: payment.id,
+    amount: Number(payment.amount),
+    description: payment.description,
+    planId: payment.meta?.planId || "",
+    phone,
+    gateway
+  })
+});
     const data=await response.json().catch(()=>({
       ok:false,
-      error:"Resposta inválida do gateway"
+      error:"Invalid gateway response"
     }));
 
     if(!response.ok || !data.ok || !data.payUrl){
-      throw new Error(data.error||"Não foi possível criar o pagamento");
+      throw new Error(data.error||`${gatewayName} payment could not be created`);
     }
 
+    pendingGatewayPayment=null;
     payWindow.location.href=data.payUrl;
 
   }catch(error){
     try{payWindow.close()}catch(e){}
-    alert(error.message||"Erro ao abrir pagamento");
+    alert(error.message||`Error opening ${gatewayName} payment`);
   }
 }
 
@@ -606,16 +855,16 @@ function closePixGateway(){
 }
 function copyPixCode(){}
 function confirmPixPaymentDemo(){}
-function startVoiceCall(id){if(!hasFullAccess()&&!paidVoiceProfiles.has(id)){const p=find(id);if(p){currentProfile=p;requestPaidCall('voice')}return}let p=find(id);if(!p)return;callImg.src=p.img;callTitle.textContent=`📞 ${p.name}, ${p.age} • Chamada de voz`;callModal.classList.add("show");sec=0;clearInterval(interval);interval=setInterval(()=>{sec++;timer.textContent=String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")},1000);callLog.unshift(`${p.name} — chamada de voz iniciada`)}
+function startVoiceCall(id){if(!hasFullAccess()&&!paidVoiceProfiles.has(id)){const p=find(id);if(p){currentProfile=p;requestPaidCall('voice')}return}let p=find(id);if(!p)return;callImg.src=p.img;callTitle.textContent=`📞 ${p.name}, ${p.age} • Voice Call`;callModal.classList.add("show");sec=0;clearInterval(interval);interval=setInterval(()=>{sec++;timer.textContent=String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")},1000);callLog.unshift(`${p.name} — voice call started`)}
 function recharge(){openPlans()}
-function setCurrency(){currentRate=rates.Brazil;myCountry.value="Brazil";render();renderAccount()}
-function like(id){let p=find(id);if(!liked.includes(p.name)){liked.push(p.name);notes.unshift(`${p.name} adicionado aos favoritos`)}renderAccount()}
-function details(id){let p=find(id);detailImg.src=p.img;detailTitle.textContent=`${p.name}, ${p.age}`;detailText.textContent=`${p.city}, ${p.country} • ${p.gender==="Female"?"Feminino":p.gender==="Male"?"Masculino":"Outro"} • ${p.status==='online'?'Online agora':p.status==='busy'?'Ocupada agora':'Offline'}`;detailChat.onclick=()=>{closeModal("profileModal");openChat(id)};reportBtn.onclick=()=>{alert(`${p.name} foi denunciado/bloqueado nesta demonstração.`);notes.unshift(`${p.name} foi denunciado/bloqueado`);closeModal("profileModal")};profileModal.classList.add("show")}
+function setCurrency(){currentRate=rates.Pakistan;render();renderAccount()}
+function like(id){let p=find(id);if(!liked.includes(p.name)){liked.push(p.name);notes.unshift(`${p.name} added to favorites`)}renderAccount()}
+function details(id){let p=find(id);detailImg.src=p.img;detailTitle.textContent=`${p.name}, ${p.age}`;detailText.textContent=`${p.city}, ${p.country} • ${p.gender==="Female"?"Female":p.gender==="Male"?"Male":"Other"} • ${p.status==='online'?'Online now':p.status==='busy'?'Ocupada agora':'Offline'}`;detailChat.onclick=()=>{closeModal("profileModal");openChat(id)};reportBtn.onclick=()=>{alert(`${p.name} was reported/blocked in this demo.`);notes.unshift(`${p.name} was reported/blocked`);closeModal("profileModal")};profileModal.classList.add("show")}
 let sec=0,interval;
-function startCall(id,accessType){const p=find(id);if(!p)return;const homeAllowed=accessType==='home'&&(hasVideoPass()||paidHomeVideoProfiles.has(id));const chatAllowed=accessType==='chat'&&(hasVideoPass()||paidVideoProfiles.has(id));if(!homeAllowed&&!chatAllowed){if(accessType==='chat'){currentProfile=p;requestPaidCall('video')}else{requestHomeVideoCall(id)}return}callImg.src=p.img;callTitle.textContent=`📹 ${p.name}, ${p.age} • Chamada de vídeo`;callModal.classList.add("show");sec=0;clearInterval(interval);interval=setInterval(()=>{sec++;timer.textContent=String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")},1000);callLog.unshift(`${p.name} — chamada de vídeo iniciada`);notes.unshift(`Chamada de vídeo iniciada com ${p.name}`)}
+function startCall(id,accessType){const p=find(id);if(!p)return;const homeAllowed=accessType==='home'&&(hasVideoPass()||paidHomeVideoProfiles.has(id));const chatAllowed=accessType==='chat'&&(hasVideoPass()||paidVideoProfiles.has(id));if(!homeAllowed&&!chatAllowed){if(accessType==='chat'){currentProfile=p;requestPaidCall('video')}else{requestHomeVideoCall(id)}return}callImg.src=p.img;callTitle.textContent=`📹 ${p.name}, ${p.age} • Video Call`;callModal.classList.add("show");sec=0;clearInterval(interval);interval=setInterval(()=>{sec++;timer.textContent=String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")},1000);callLog.unshift(`${p.name} — video call started`);notes.unshift(`Video call started with ${p.name}`)}
 function closeCall(){clearInterval(interval);callModal.classList.remove("show");renderAccount()}
 function closeModal(id){document.getElementById(id).classList.remove("show")}
-function saveAccount(){alert("Perfil de demonstração salvo")}
+function saveAccount(){alert("Demo profile saved")}
 
 function renderChatsPage(){
   const box=document.getElementById("allChatHistory");
@@ -626,15 +875,15 @@ function renderChatsPage(){
     const tb=chatThreads[b]?.[chatThreads[b].length-1]?.time||0;
     return tb-ta;
   });
-  if(!ids.length){box.innerHTML="<div class='item'>Nenhuma conversa ainda. Envie uma mensagem para um perfil e ela aparecerá aqui.</div>";return;}
+  if(!ids.length){box.innerHTML="<div class='item'>No conversations yet. Send a message to a profile and it will appear here.</div>";return;}
   box.innerHTML=ids.map(id=>{
     const p=find(id),th=chatThreads[id],last=th[th.length-1];
     const preview=escape(last.text.length>85?last.text.slice(0,85)+"…":last.text);
-    return `<button class="item" style="width:100%;text-align:left;color:#fff;display:flex;align-items:center;gap:12px" onclick="openChat('${id}')"><img src="${p.img}" style="width:52px;height:52px;border-radius:50%;object-fit:cover"><div style="min-width:0"><b>${escape(p.name)}, ${p.age}</b><div class="muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:620px">${last.who==='me'?'Você: ':''}${preview}</div></div></button>`;
+    return `<button class="item" style="width:100%;text-align:left;color:#fff;display:flex;align-items:center;gap:12px" onclick="openChat('${id}')"><img src="${p.img}" style="width:52px;height:52px;border-radius:50%;object-fit:cover"><div style="min-width:0"><b>${escape(p.name)}, ${p.age}</b><div class="muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:620px">${last.who==='me'?'You: ':''}${preview}</div></div></button>`;
   }).join("");
 }
 
-function renderAccount(){balance.textContent=money(wallet);if(document.getElementById("headerBalance"))headerBalance.textContent=money(wallet);currencyText.textContent=hasFullAccess()?`Acesso completo até ${formatAccessTime(fullAccessUntil)}`:hasVideoPass()?`Passe de vídeo até ${formatAccessTime(videoPassUntil)}`:"Escolha um plano para liberar o acesso";favorites.innerHTML=liked.length?liked.map(x=>`<div class="item">❤️ ${x}</div>`).join(""):"<div class='item'>Nenhum favorito ainda.</div>";chatHistory.innerHTML=Object.keys(chatThreads).filter(id=>find(id)&&chatThreads[id]?.length>1).length?Object.keys(chatThreads).filter(id=>find(id)&&chatThreads[id]?.length>1).map(id=>{const p=find(id),last=chatThreads[id][chatThreads[id].length-1];return `<div class="item" style="cursor:pointer" onclick="openChat('${id}')"><b>${escape(p.name)}</b><div class="muted">${last.who==='me'?'Você: ':''}${escape(last.text)}</div></div>`}).join(""):"<div class='item'>Nenhum histórico de chat.</div>";callHistory.innerHTML=callLog.length?callLog.map(x=>`<div class="item">${x}</div>`).join(""):"<div class='item'>Nenhum histórico de chamadas.</div>";notifications.innerHTML=notes.map(x=>`<div class="item">🔔 ${x}</div>`).join("")}
+function renderAccount(){balance.textContent=money(wallet);if(document.getElementById("headerBalance"))headerBalance.textContent=money(wallet);currencyText.textContent=hasFullAccess()?`Full access until ${formatAccessTime(fullAccessUntil)}`:hasVideoPass()?`Video pass until ${formatAccessTime(videoPassUntil)}`:"Choose a plan to unlock access";favorites.innerHTML=liked.length?liked.map(x=>`<div class="item">❤️ ${x}</div>`).join(""):"<div class='item'>No favorites yet.</div>";chatHistory.innerHTML=Object.keys(chatThreads).filter(id=>find(id)&&chatThreads[id]?.length>1).length?Object.keys(chatThreads).filter(id=>find(id)&&chatThreads[id]?.length>1).map(id=>{const p=find(id),last=chatThreads[id][chatThreads[id].length-1];return `<div class="item" style="cursor:pointer" onclick="openChat('${id}')"><b>${escape(p.name)}</b><div class="muted">${last.who==='me'?'You: ':''}${escape(last.text)}</div></div>`}).join(""):"<div class='item'>No chat history.</div>";callHistory.innerHTML=callLog.length?callLog.map(x=>`<div class="item">${x}</div>`).join(""):"<div class='item'>No call history.</div>";notifications.innerHTML=notes.map(x=>`<div class="item">🔔 ${x}</div>`).join("")}
 function escape(t){return t.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 renderAccount();
 renderChatsPage();

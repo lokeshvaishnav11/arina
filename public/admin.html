@@ -498,13 +498,16 @@ Profiles
   required
 >
 
-<input
+<select
   id="addCountry"
   name="country"
-  placeholder="Country"
-  value="Brazil"
   required
 >
+<option value="Pakistan">Pakistan</option>
+<option value="India">India</option>
+<option value="Russia">Russia</option>
+<option value="America">America</option>
+</select>
 
 <select
   id="addGender"
@@ -669,10 +672,12 @@ Profile List
   placeholder="City"
 >
 
-<input
-  id="pCountry"
-  placeholder="Country"
->
+<select id="pCountry">
+<option value="Pakistan">Pakistan</option>
+<option value="India">India</option>
+<option value="Russia">Russia</option>
+<option value="America">America</option>
+</select>
 
 
 <select id="pGender">
@@ -1515,7 +1520,7 @@ async function addProfile(e){
 
 
     addCountry.value =
-      'Brazil';
+      'Pakistan';
 
 
     addStatus.value =
