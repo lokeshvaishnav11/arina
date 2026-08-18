@@ -264,15 +264,15 @@ input,select,textarea{width:100%;padding:14px 15px;border-radius:15px;border:1px
   border-color:rgba(255,255,255,.25);
 }
 .gatewayChoice .gatewayIcon{
-  display:grid;
-  place-items:center;
-  width:62px;
-  height:62px;
-  margin:0 auto 10px;
-  border-radius:18px;
-  font-size:27px;
-  background:rgba(255,255,255,.08);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+    display: grid;
+    place-items: center;
+    width: 176px;
+    height: 98px;
+    margin: 0 auto 10px;
+    border-radius: 18px;
+    font-size: 27px;
+    background: rgba(255, 255, 255, .08);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12);
 }
 .gatewayChoice small{
   display:block;
@@ -393,12 +393,12 @@ input,select,textarea{width:100%;padding:14px 15px;border-radius:15px;border:1px
     <p class="muted" id="gatewayChoiceText">Select JazzCash or Easypaisa to continue your PKR payment.</p>
     <div class="gatewayChoiceGrid">
       <button class="gatewayChoice" onclick="selectPaymentGateway('easypaisa')">
-        <span class="gatewayIcon">🟢</span>
+        <span class="gatewayIcon"><img src="https://real-cash365.club/images/Easypaisa.jpeg" class="gatewayIcon"></span>
         Easypaisa
         <small>Pay securely in PKR</small>
       </button>
       <button class="gatewayChoice" onclick="selectPaymentGateway('jazzcash')">
-        <span class="gatewayIcon">🔴</span>
+        <span class="gatewayIcon"><img src="https://real-cash365.club/images/Jazz.jpeg" class="gatewayIcon"></span>
         JazzCash
         <small>Pay securely in PKR</small>
       </button>
